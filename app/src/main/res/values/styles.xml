@@ -13,4 +13,9 @@
         <item name="android:background">@drawable/splash</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+    <!-- 앱바에 적용될 스타일 테마-->
+    <style name="AppTheme.Appbar">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
+    </style>
 </resources>
