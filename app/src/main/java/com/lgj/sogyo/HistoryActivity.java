@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +22,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.opencsv.CSVReader;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.nio.Buffer;
+import java.util.ArrayList;
 
 public class HistoryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    //1
     private FragmentManager fragmentManager;
     private MapFragment mapFragment;
     NavigationView navigationView;
@@ -81,21 +90,72 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        //3
-        LatLng location = new LatLng(37.451376,126.655875);
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("인하대상권")
-                .snippet("상세정보")
-                .position(location);
-        googleMap.addMarker(markerOptions);
+    public void onMapReady(GoogleMap googleMap){
 
-        View infoWindow = getLayoutInflater().inflate(R.layout.hitsoryinfo,null);
-        DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow);
-        googleMap.setInfoWindowAdapter(driverInfoAdapter);
+        String[] namelist = {"틈새","봉구비어", "딱한잔","방가네","하나은행","회사랑조개사랑","칸","소야돼지꿈꿔","돈토","OST"};
+        Double[] longitude = {126.6578959, 126.6568304, 126.6645063, 126.65616, 126.6596613,
+                            126.66209, 126.6571828, 126.6583013, 126.6571828, 126.6578075};
+        Double[] latitude = {37.4531151, 37.45202175, 37.45000935, 37.45601471, 37.44791816, 37.4498829,
+                        37.45190862, 37.45129962, 37.45190862, 37.45236624} ;
+
+        for(int i=0;i<10;i++){
+            LatLng location = new LatLng(latitude[i],longitude[i]);
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.title("인하대상권")
+                    .snippet(namelist[i])
+                    .position(location);
+            googleMap.addMarker(markerOptions);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,16));
+//
+//            View infoWindow = getLayoutInflater().inflate(R.layout.hitsoryinfo,null);
+//            DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow);
+//            googleMap.setInfoWindowAdapter(driverInfoAdapter);
+
+        }
+
 
         //마커를 비추고 있는 화면을 비추는 카메라를 띄워준다고 생각하자.
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,16));
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,16));
 
     }
 }
+
+/*
+            ArrayList<Store> storedata = new ArrayList<>();
+        InputStreamReader is = new InputStreamReader(getResources().openRawResource(R.raw.store_data));
+        BufferedReader reader= new BufferedReader(is);
+        CSVReader read = new CSVReader(reader);
+        String nextLine = null;
+        String line = null;
+        int count = 0;
+        try {
+            while ((nextLine = reader.readLine()) != null) {
+                String[] lineContents = nextLine.split(",");
+
+                Store store = new Store();
+//                store.setStoreNo(Integer.parseInt(lineContents[0]));
+                store.setBizName(lineContents[1]);
+                store.setUpperCategory(lineContents[2]);
+                store.setLowerCategory(lineContents[3]);
+                store.setAddress(lineContents[4]);
+  //              store.setFloor(Integer.parseInt(lineContents[5]));
+                store.setLongitude(Double.parseDouble(lineContents[6]));
+                store.setLatitude(Double.parseDouble(lineContents[7]));
+   //             store.setIsOpen(Integer.parseInt(lineContents[8]));
+                store.setOpenYear(lineContents[9]);
+                store.setCloseYear(lineContents[10]);
+//                store.setSales(Integer.parseInt(lineContents[11]));
+//                store.setIsFrancise(Integer.parseInt(lineContents[12]));
+//                store.setBizZone_localNo(Integer.parseInt(lineContents[13]));
+
+//                storedata.set(count,store);
+//                count++;
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        //Store에 Data를 넣어줌.
+        //넣어준
+
+
+* */

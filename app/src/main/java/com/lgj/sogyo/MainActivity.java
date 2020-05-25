@@ -10,6 +10,10 @@ import android.widget.Button;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class MainActivity extends AppCompatActivity {
 
     NavigationView navigationView;
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Button button_history = (Button)findViewById(R.id.button_history);
         Button button_commercialAnalyze=(Button)findViewById(R.id.button_commercialAnalyze);
         Button button_judgement=(Button)findViewById(R.id.button_judgementActivity);
+
         button_history.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -79,10 +84,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,judgementActivity.class);
+                Intent intent = new Intent(MainActivity.this,VolleyExampleActivity.class);
                 startActivity(intent);
             }
         });
+
     }
 //
 }
