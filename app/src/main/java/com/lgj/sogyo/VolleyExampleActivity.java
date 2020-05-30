@@ -9,10 +9,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+<<<<<<< HEAD
+=======
+import com.android.volley.toolbox.JsonArrayRequest;
+>>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+<<<<<<< HEAD
+=======
+import org.json.JSONArray;
+>>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,6 +47,7 @@ public class VolleyExampleActivity extends AppCompatActivity {
         tv = findViewById(R.id.tvMain);
         queue = Volley.newRequestQueue(this); //큐 초기화
 
+<<<<<<< HEAD
         String url="http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
 
          JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -50,6 +59,23 @@ public class VolleyExampleActivity extends AppCompatActivity {
                     BizName = response.getString("BizName");
 
                     tv.setText("제발되라" + StoreNo + BizName);
+=======
+        String url = "http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
+
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        int StoreNo = jsonObject.getInt("StoreNo");
+                        String BizName = jsonObject.getString("BizName");
+
+                        tv.append(StoreNo + BizName+"\n");
+//                        tv.setText(StoreNo + BizName);
+                    }
+>>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -57,6 +83,7 @@ public class VolleyExampleActivity extends AppCompatActivity {
         },new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
+<<<<<<< HEAD
                     tv.setText("에러에러");
             }
         });
@@ -65,3 +92,14 @@ public class VolleyExampleActivity extends AppCompatActivity {
 
 
 }
+=======
+
+            }
+        }
+        );
+
+        queue.add(jsonArrayRequest);
+    }
+}
+
+>>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784
