@@ -21,7 +21,7 @@ var connection = mysql.createConnection({
 
 //상권분석 그래프 분기별 매출액
 app.get('/CommercialAnalyze',function(req,res){
-        var sql="select qt_sales from sales group by quarter";
+        var sql="select quarter,lowerCategory, qt_sales from sales;";
         connection.query(sql,function(err,result){
                 if(err){
                         console.log(err);
