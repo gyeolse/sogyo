@@ -9,18 +9,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-<<<<<<< HEAD
-=======
 import com.android.volley.toolbox.JsonArrayRequest;
->>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-<<<<<<< HEAD
-=======
 import org.json.JSONArray;
->>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,19 +41,6 @@ public class VolleyExampleActivity extends AppCompatActivity {
         tv = findViewById(R.id.tvMain);
         queue = Volley.newRequestQueue(this); //큐 초기화
 
-<<<<<<< HEAD
-        String url="http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
-
-         JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                try {
-                    StoreNo = response.getInt("StoreNo");
-                    BizName = response.getString("BizName");
-
-                    tv.setText("제발되라" + StoreNo + BizName);
-=======
         String url = "http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
 
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -75,24 +56,13 @@ public class VolleyExampleActivity extends AppCompatActivity {
                         tv.append(StoreNo + BizName+"\n");
 //                        tv.setText(StoreNo + BizName);
                     }
->>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        },new Response.ErrorListener() {
-
+        }, new Response.ErrorListener() {
+            @Override
             public void onErrorResponse(VolleyError error) {
-<<<<<<< HEAD
-                    tv.setText("에러에러");
-            }
-        });
-        queue.add(jsonRequest);
-    }
-
-
-}
-=======
 
             }
         }
@@ -102,4 +72,3 @@ public class VolleyExampleActivity extends AppCompatActivity {
     }
 }
 
->>>>>>> ee1f87a0a618a0071f1fce864aea5dd15759f784

@@ -27,7 +27,7 @@ app.post('/history/location', function (req, res) {
     // 삽입을 수행하는 sql문.
     var sql = 'select longitude, latitude from store';    
 // sql 문의 ?는 두번째 매개변수로 넘겨진 params의 값으로 치환된다.
-    connection.query(sql, function (err, result) {
+    connection.query(sql, function (err, result) {  
         var resultCode = 404;
         var message = 'error is occur ';
 
@@ -47,7 +47,7 @@ app.post('/history/location', function (req, res) {
 
 app.get('/history/location',function(req,res){
 //        console.log(req.body);
-        var sql = 'select *  from store limit 100';
+        var sql = 'select *  from store';
         connection.query(sql,function(err,result){
                 var resultCode = 100;
                 var message = 'Error Occured!';

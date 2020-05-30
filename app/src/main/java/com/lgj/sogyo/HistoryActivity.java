@@ -114,13 +114,14 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                     JSONObject jsonObject = response.getJSONObject(i);
                     double longitude = jsonObject.getDouble("longitude");
                     double latitude = jsonObject.getDouble("latitude");
+                    String BizName = jsonObject.getString("BizName");
                     longitude_list.add(longitude);
                     latitude_list.add(latitude);
 
                     LatLng location = new LatLng(latitude_list.get(i), longitude_list.get(i));
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(location);
-                    googleMap1.addMarker(markerOptions);
+                    googleMap1.addMarker(markerOptions).setTitle(BizName);
                     googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
 
                 }
