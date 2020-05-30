@@ -19,34 +19,22 @@ var connection = mysql.createConnection({
         port:3306
 });
 
-app.post('/history/location', function (req, res) {
-//    var userEmail = req.body.userEmail;
-//    var userPwd = req.body.userPwd;
-//    var userName = req.body.userName;
-
-    // 삽입을 수행하는 sql문.
-    var sql = 'select longitude, latitude from store';    
-// sql 문의 ?는 두번째 매개변수로 넘겨진 params의 값으로 치환된다.
-    connection.query(sql, function (err, result) {
-        var resultCode = 404;
-        var message = 'error is occur ';
-
-        if (err) {
-            console.log(err);
-        } else {
-            resultCode = 200;
-            message = 'success ';
-        }
-
-        res.json({
-            'code': resultCode,
-            'message': message
-        });
-    });
+app.get('/analysis',function(req,res){
+        var sql="";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
 });
 
 app.get('/history/location',function(req,res){
-        console.log(req.body);
+       // console.log(req.query);
         var sql = 'select * from store';
         connection.query(sql,function(err,result){
                 var resultCode = 100;
@@ -58,8 +46,23 @@ app.get('/history/location',function(req,res){
                         console.log(result);
                         message = 'success!';
                         console.log('success!!!!!');
+
                         res.json(result);
                 }
 
         });
 });
+
+app.get('/judgement',function(req,res){
+        var sql="";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+})
