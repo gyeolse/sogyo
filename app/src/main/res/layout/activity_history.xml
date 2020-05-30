@@ -42,8 +42,6 @@
             android:layout_height="match_parent"
             class="com.google.android.gms.maps.MapFragment" />
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--        AppBar도 material 라이브러리가 있어야 사용 가능하다.-->

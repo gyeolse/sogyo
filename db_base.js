@@ -47,7 +47,7 @@ app.post('/history/location', function (req, res) {
 
 app.get('/history/location',function(req,res){
 //        console.log(req.body);
-        var sql = 'select * from store';
+        var sql = 'select *  from store limit 100';
         connection.query(sql,function(err,result){
                 var resultCode = 100;
                 var message = 'Error Occured!';
