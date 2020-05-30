@@ -19,7 +19,22 @@ var connection = mysql.createConnection({
         port:3306
 });
 
-app.get('/analysis',function(req,res){
+//상권분석 그래프 분기별 매출액
+app.get('/CommercialAnalyze',function(req,res){
+        var sql="select qt_sales from sales group by quarter";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+
+app.get('/analysis/details',function(req,res){
         var sql="";
         connection.query(sql,function(err,result){
                 if(err){
