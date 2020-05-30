@@ -9,8 +9,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 //volley 라이브러리 쓰기 전에 dependency도 추가해주고, manifest에서 user permission internet 추가해줘야함.
 //지금은 추가되어있는 상태
@@ -25,41 +31,44 @@ public class VolleyExampleActivity extends AppCompatActivity {
     private TextView tv;
     private RequestQueue queue; //volley가 queue에 response를 넣어주고, 그거를 차례때로 뽑아서 서버에 보내는 구조임
 
+    public int StoreNo;
+    public String BizName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_volley_example);
         tv = findViewById(R.id.tvMain);
         queue = Volley.newRequestQueue(this); //큐 초기화
-        String url="http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
 
-        //String 형식으로 request를 받아옴, 이거는 json 형식으로도 받아올 수 있는데,
-        //json 형식으로 받아오면 무조건적으로 어플이 꺼짐. 이유 모름. 그 이유 찾는게 한 세월임. 이거 알고 끝나고 찾아봐야함.
+        String url = "http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
 
-        //request/ repsonse 하는 방식은 거의 모두 이렇게 구성이 됨.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
-                //여기에서 받아온 response에 대해서 처리를 어떻게 할 건지 적어주면 됨.
-                //현재는 그냥 텍스트 뷰에 보여주기만 해서, 이렇게 써둠.
-                tv.setText(response);
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        int StoreNo = jsonObject.getInt("StoreNo");
+                        String BizName = jsonObject.getString("BizName");
+
+                        tv.append(StoreNo + BizName+"\n");
+//                        tv.setText(StoreNo + BizName);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //error 처리해주는 함수.
+
             }
-        });
-
-        stringRequest.setTag(TAG);
-        queue.add(stringRequest); //큐에 추가를 해줌. request를 추가해주는 과정임.
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if(queue!=null){
-            queue.cancelAll(TAG);
         }
+        );
+
+        queue.add(jsonArrayRequest);
     }
 }
+
