@@ -17,6 +17,8 @@ import com.google.android.material.navigation.NavigationView;
 import android.content.Intent;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +51,8 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     public String url = "http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
     public ArrayList<Double> latitude_list = new ArrayList<>();
     public ArrayList<Double> longitude_list = new ArrayList<>();
+
+    public ClusterManager<MyItem> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +110,7 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap){
         final GoogleMap googleMap1 = googleMap;
 
-    final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
             Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
@@ -115,38 +120,46 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                     double longitude = jsonObject.getDouble("longitude");
                     double latitude = jsonObject.getDouble("latitude");
                     String BizName = jsonObject.getString("BizName");
+                    MyItem offsetItem = new MyItem(latitude,longitude);
+                    mClusterManager.addItem(offsetItem);
                     longitude_list.add(longitude);
                     latitude_list.add(latitude);
 
                     LatLng location = new LatLng(latitude_list.get(i), longitude_list.get(i));
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(location);
-                    googleMap1.addMarker(markerOptions).setTitle(BizName);
-                    googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
-
+//                    googleMap1.addMarker(markerOptions).setTitle(BizName);
+                    googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 10));
+//                    View infoWindow = getLayoutInflater().inflate(R.layout.hitsoryinfo,null);
+//                    DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow);
+//                    googleMap1.setInfoWindowAdapter(driverInfoAdapter);
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
         }
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
         }
     });
+        //Clustering
+        mClusterManager = new ClusterManager<>(this,googleMap1);
+        googleMap1.setOnCameraIdleListener(mClusterManager);
+        googleMap1.setOnMarkerClickListener(mClusterManager);
+
     queue.add(jsonArrayRequest);
     LatLng location_2 = new LatLng( 37.45155845, 126.6572908);
 
     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location_2, 16));
-//
-//            View infoWindow = getLayoutInflater().inflate(R.layout.hitsoryinfo,null);
-//            DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow);
-//            googleMap.setInfoWindowAdapter(driverInfoAdapter);
     }
 
 
     //마커를 비추고 있는 화면을 비추는 카메라를 띄워준다고 생각하자.
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,16));
+
 
 }
 
