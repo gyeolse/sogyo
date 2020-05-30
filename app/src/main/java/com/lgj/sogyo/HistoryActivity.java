@@ -38,24 +38,24 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     private FragmentManager fragmentManager;
     private MapFragment mapFragment;
     NavigationView navigationView;
-    DrawerLayout  drawerLayout;
+    DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
 
-//For Volley
+    //For Volley
     private static final String TAG = "MAIN";
     private RequestQueue queue; //volley가 queue에 response를 넣어주고, 그거를 차례때로 뽑아서 서버에 보내는 구조임
 
     public String url = "http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
-    public ArrayList<Double>latitude_list = new ArrayList<>();
-    public ArrayList<Double>longitude_list = new ArrayList<>();
+    public ArrayList<Double> latitude_list = new ArrayList<>();
+    public ArrayList<Double> longitude_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
         //FOR VOLLEY
         queue = Volley.newRequestQueue(this); //큐 초기화
+
 ////////////////////////////////////////////////////////////////////////////////////////////
         //2
         fragmentManager = getFragmentManager();
@@ -101,29 +101,29 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
         });
     }
 ////////////////////////////////////////////////////////////////////////////////////////////
-@Override
-public void onMapReady(GoogleMap googleMap){
+    @Override
+    public void onMapReady(GoogleMap googleMap){
+        final GoogleMap googleMap1 = googleMap;
 
     final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
             Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
             try {
-                System.out.println("온크리에이트함수");
-
                 for (int i = 0; i < response.length(); i++) {
-                        System.out.println("for문 전");
-
                     JSONObject jsonObject = response.getJSONObject(i);
                     double longitude = jsonObject.getDouble("longitude");
                     double latitude = jsonObject.getDouble("latitude");
                     longitude_list.add(longitude);
                     latitude_list.add(latitude);
-                    System.out.println(longitude_list.get(i));
-                    System.out.println(latitude_list.get(i));
+
+                    LatLng location = new LatLng(latitude_list.get(i), longitude_list.get(i));
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(location);
+                    googleMap1.addMarker(markerOptions);
+                    googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
+
                 }
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -132,18 +132,8 @@ public void onMapReady(GoogleMap googleMap){
         @Override
         public void onErrorResponse(VolleyError error) {
         }
-    }
-    );
+    });
     queue.add(jsonArrayRequest);
-
-    for(int i=0;i<latitude_list.size();i++) {
-
-        LatLng location = new LatLng(latitude_list.get(i),longitude_list.get(i));
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(location);
-        googleMap.addMarker(markerOptions);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
-    }
     LatLng location_2 = new LatLng( 37.45155845, 126.6572908);
 
     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location_2, 16));
