@@ -15,80 +15,89 @@
 
     </TextView
         >
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
-                android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="가게명" />
-            <TextView
+                android:text="가게명"
                 android:textColor="#FFFFFF"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="연도" />
-            <TextView
-                android:textColor="#FFFFFF"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="운영여부" />
-
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+                android:textSize="18sp" />
 
             <TextView
-                android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="닭살부부" />
+                android:text="연도"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
             <TextView
-                android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="2012~" />
-            <TextView
+                android:text="운영여부"
                 android:textColor="#FFFFFF"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="운영중" />
+                android:textSize="18sp" />
 
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
-                android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="연꽃마을" />
+                android:text="닭살부부"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
             <TextView
-                android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="폐점" />
+                android:text="2012~"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
             <TextView
-                android:textColor="#FFFFFF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:text="운영여부" />
+                android:text="운영중"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="연꽃마을"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="폐점"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="운영여부"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
 
         </TableRow>
     </TableLayout>

@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.material.navigation.NavigationView;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,23 +47,31 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
 
     //For Volley
     private static final String TAG = "MAIN";
-    private RequestQueue queue; //volley가 queue에 response를 넣어주고, 그거를 차례때로 뽑아서 서버에 보내는 구조임
-
-    public String url = "http://10.0.2.2:3000/history/location"; //요청 보낼 url 현재 지금 있는건 임의로 만든 거임.
+    private RequestQueue queue; //volley가 queue에 response 넣기
+    public String url = "http://10.0.2.2:3000/history/location"; //보낼 URL. 임의로 생성
     public ArrayList<Double> latitude_list = new ArrayList<>();
     public ArrayList<Double> longitude_list = new ArrayList<>();
-
     public ClusterManager<MyItem> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        final LoadingDialog loadingDialog = new LoadingDialog(HistoryActivity.this);
+        Handler handler = new Handler();
+        loadingDialog.startLoadingDialog();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.dismissDialog();
+            }
+        }, 3000);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         //FOR VOLLEY
         queue = Volley.newRequestQueue(this); //큐 초기화
-
-////////////////////////////////////////////////////////////////////////////////////////////
-        //2
+        //2 MAP FRAGMENT
         fragmentManager = getFragmentManager();
         mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.fragment_main_mv);
         mapFragment.getMapAsync(this);
@@ -79,7 +88,6 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);//누를때마다 아이콘이 팽그르 돈다.
         drawerToggle.syncState();// 삼선 메뉴 추가
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -105,6 +113,7 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
     }
+
 ////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onMapReady(GoogleMap googleMap){
@@ -128,77 +137,35 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                     LatLng location = new LatLng(latitude_list.get(i), longitude_list.get(i));
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(location);
+                    googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
 //                    googleMap1.addMarker(markerOptions).setTitle(BizName);
-                    googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 10));
-//                    View infoWindow = getLayoutInflater().inflate(R.layout.hitsoryinfo,null);
-//                    DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow);
-//                    googleMap1.setInfoWindowAdapter(driverInfoAdapter);
-                }
+                    View infoWindow = getLayoutInflater().inflate(R.layout.historyinfo_2,null);
 
+                    DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow);
+                    googleMap1.setInfoWindowAdapter(driverInfoAdapter);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
     }, new Response.ErrorListener() {
         @Override
-        public void onErrorResponse(VolleyError error) {
-        }
-    });
+        public void onErrorResponse(VolleyError error) { } });
+
         //Clustering
+        LatLng base_location = new LatLng(37.451095, 126.656996);
+        googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(base_location, 15));
+
         mClusterManager = new ClusterManager<>(this,googleMap1);
         googleMap1.setOnCameraIdleListener(mClusterManager);
         googleMap1.setOnMarkerClickListener(mClusterManager);
 
-    queue.add(jsonArrayRequest);
-    LatLng location_2 = new LatLng( 37.45155845, 126.6572908);
+    queue.add(jsonArrayRequest); //queue에 request 추가
 
-    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location_2, 16));
-    }
-
+    } //ONMAPREADY 종료 시점.
 
     //마커를 비추고 있는 화면을 비추는 카메라를 띄워준다고 생각하자.
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,16));
 
 
-}
-
-/*
-            ArrayList<Store> storedata = new ArrayList<>();
-        InputStreamReader is = new InputStreamReader(getResources().openRawResource(R.raw.store_data));
-        BufferedReader reader= new BufferedReader(is);
-        CSVReader read = new CSVReader(reader);
-        String nextLine = null;
-        String line = null;
-        int count = 0;
-        try {
-            while ((nextLine = reader.readLine()) != null) {
-                String[] lineContents = nextLine.split(",");
-
-                Store store = new Store();
-//                store.setStoreNo(Integer.parseInt(lineContents[0]));
-                store.setBizName(lineContents[1]);
-                store.setUpperCategory(lineContents[2]);
-                store.setLowerCategory(lineContents[3]);
-                store.setAddress(lineContents[4]);
-  //              store.setFloor(Integer.parseInt(lineContents[5]));
-                store.setLongitude(Double.parseDouble(lineContents[6]));
-                store.setLatitude(Double.parseDouble(lineContents[7]));
-   //             store.setIsOpen(Integer.parseInt(lineContents[8]));
-                store.setOpenYear(lineContents[9]);
-                store.setCloseYear(lineContents[10]);
-//                store.setSales(Integer.parseInt(lineContents[11]));
-//                store.setIsFrancise(Integer.parseInt(lineContents[12]));
-//                store.setBizZone_localNo(Integer.parseInt(lineContents[13]));
-
-//                storedata.set(count,store);
-//                count++;
-            }
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-        //Store에 Data를 넣어줌.
-        //넣어준
-
-
-* */
+} //HISTORY ACTIVITY 종료 시점

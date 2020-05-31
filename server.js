@@ -19,7 +19,7 @@ var connection = mysql.createConnection({
         port:3306
 });
 
-//상권분석 그래프 분기별 매출액
+//?��권분?�� 그래?�� 분기�? 매출?��
 app.get('/CommercialAnalyze',function(req,res){
         var sql="select quarter,lowerCategory, qt_sales from sales;";
         connection.query(sql,function(err,result){

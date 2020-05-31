@@ -8,9 +8,7 @@
     tools:context=".MainActivity">
 
     <!--    1. 콘텐츠 영역-->
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ourblue">
@@ -46,9 +44,11 @@
 
         <Button
             android:id="@+id/button_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="244dp"
+            android:layout_height="54dp"
+            android:background="@drawable/custom_button"
             android:text="history"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -57,22 +57,26 @@
             app:layout_constraintVertical_bias="0.325" />
 
         <Button
+            android:background="@drawable/custom_button"
             android:id="@+id/button_commercialAnalyze"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="244dp"
+            android:layout_height="54dp"
             android:layout_below="@id/button_history"
             android:layout_marginTop="71dp"
             android:text="상권분석"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/button_history"
             app:layout_constraintTop_toBottomOf="@+id/button_history" />
 
         <Button
+            android:background="@drawable/custom_button"
             android:id="@+id/button_judgementActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="244dp"
+            android:layout_height="54dp"
             android:layout_below="@id/button_history"
             android:layout_marginTop="196dp"
             android:text="업종판단"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/button_history"
             app:layout_constraintTop_toBottomOf="@+id/button_history" />
 
