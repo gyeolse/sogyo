@@ -4,10 +4,10 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
     user:'root',
     database: 'biz',
-    password: '1234',
+    password: '12341234',
     port:3306
     //multipleStatements: true //다중 쿼리
 });
@@ -18,15 +18,18 @@ var pop=[];
 var cntbylow=[];
 
 
-var sql1="select t1.population, t2.lowerCategory,count(*) as cnt from bizzone as t1 join store as t2 on t1.localNo=t2.bizZone_localNo group by t2.lowerCategory";
+var sql1="select t1.population, t2.lowerCategory,count(*) as cnt from bizZone as t1 join store as t2 on t1.localNo=t2.bizZone_localNo group by t2.lowerCategory";
 connection.query(sql1,function(err,rows,fields){
     if(err){
         console.log(err);
     }else{
+        var count=0;
         for(var i=0;i<rows.length;i++){
             pop[i]=rows[i].population;
             cntbylow[i]=rows[i].cnt;
+            count++;
         }
+        console.log(count);
         get_median(pop,cntbylow);
     }
 })
@@ -95,15 +98,32 @@ function rivals(lowercnt){
     return score;
 }
 //3. 연령대 유동인구 점수 구하는 함수
-function ageFloat(){
-    //1:35
-    //2:~
-    //3:65
+function ageFloat(needs){
+    var ratio=needs/population;
     var score;
+    if(ratio<0.35){
+        score=1;
+    }
+    else if(ratio>=0.35&&ratio<0.65){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     return score;
 }
 //4. 연령대 상주인구 점수 구하는 함수
-function ageLiving(){
+function ageLiving(needs){
+    var ratio=needs/population;
+    if(ratio<0.35){
+        score=1;
+    }
+    else if(ratio>=0.35&&ratio<0.65){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     //1:35
     //2:~
     //3:65
@@ -111,16 +131,34 @@ function ageLiving(){
     return score;
 }
 //5. 시간대 유동인구 점수 구하는 함수
-function timeFloat(){
-    //겹칠 가능성 있으면 인구수 합*0.6
-    //1:35
-    //2:~
-    //3:65
+function timeFloat(needs){
+    //점심 저녁 야식 시간대 중 겹치는 시간 2개 이상->인구수 합*0.6
+    //을 어떻게 짜야할가요?
+    var ratio=needs/population;
+    if(ratio<0.35){
+        score=1;
+    }
+    else if(ratio>=0.35&&ratio<0.65){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     var score;
     return score;
 }
 //6. 성별 유동인구 점수 구하는 함수
-function genderFloat(gender){
+function genderFloat(needs){
+    var ratio=needs/population;
+    if(ratio<0.4){
+        score=1;
+    }
+    else if(ratio>=0.4&&ratio<0.5){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     var score;
     //0.4이하:1, 0.4~0.5:2, 그 이상:3
     return score;
@@ -132,7 +170,6 @@ var lowerCtg;
 
 switch(lowerCtg){
     case "커피전문점/카페/다방":
-        
         break;
     case "패스트푸드":
         break;
