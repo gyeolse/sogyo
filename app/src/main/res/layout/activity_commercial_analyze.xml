@@ -7,27 +7,27 @@
     android:id="@+id/layout_drawer"
     tools:context=".CommercialAnalyze">
 
+
     <!--    1. 콘텐츠 영역-->
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ourblue">
-<!--        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" tools:context=".CommercialAnalyze" android:orientation="vertical"> <com.github.mikephil.charting.charts.LineChart android:id="@+id/linechart" android:layout_width="match_parent" android:layout_height="match_parent"/> </LinearLayout>-->
+        <!--        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" tools:context=".CommercialAnalyze" android:orientation="vertical"> <com.github.mikephil.charting.charts.LineChart android:id="@+id/linechart" android:layout_width="match_parent" android:layout_height="match_parent"/> </LinearLayout>-->
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:layout_height="500dp"
-            android:layout_width="match_parent"
-            android:id="@+id/chart"
-            tools:ignore="MissingConstraints" />
 
         <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
+            android:id="@+id/appBarLayout2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints"
+            android:layout_gravity="center"
+            android:layout_marginBottom="7dp"
             android:theme="@style/AppTheme.Appbar"
-            android:layout_gravity="center">
+            app:layout_constraintBottom_toTopOf="@+id/chart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -39,13 +39,30 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-
-
         </com.google.android.material.appbar.AppBarLayout>
 
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+
+            android:layout_marginBottom="63dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
+            tools:ignore="MissingConstraints">
 
 
+        </com.github.mikephil.charting.charts.LineChart>
 
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/chart"
+            app:layout_constraintTop_toBottomOf="@+id/chart" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--        AppBar도 material 라이브러리가 있어야 사용 가능하다.-->
@@ -59,5 +76,6 @@
         android:layout_gravity="start"
         app:menu="@menu/navi_menu"
         />
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
