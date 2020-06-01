@@ -17,8 +17,23 @@ connection.connect();
 var pop=[];
 var cntbylow=[];
 
-
+//인구수, 업종별 가게 수
 var sql1="select t1.population, t2.lowerCategory,count(*) as cnt from bizZone as t1 join store as t2 on t1.localNo=t2.bizZone_localNo group by t2.lowerCategory";
+//업종별 지금 분기, 이전 분기 매출액
+var sql2="select quarter,qt_sales,lowerCategory from sales where quarter=1 or quarter=2"; //현재 6월이므로 2분기, 이전분기는 1분기
+//연령대 유동인구
+var sql3="select sum(population) from Floating_people where age="+"필요한 나이대";
+//연령대 상주인구
+var sql4="select sum(population) from Living_people where age="+"필요한 나이대";
+//시간대 유동인구
+var sql3="select sum(population) from Floating_people where time="+"필요한 시간대";
+//성별 유동인구
+var sql3="select sum(population) from Floating_people where gender='여성'";
+
+
+//전체 유동인구 수& 상주인구 수
+var floating="select sum(population) from Floating_people";
+var living="select sum(population) from Living_people";
 connection.query(sql1,function(err,rows,fields){
     if(err){
         console.log(err);
@@ -30,9 +45,8 @@ connection.query(sql1,function(err,rows,fields){
             count++;
         }
         console.log(count);
-        get_median(pop,cntbylow);
     }
-})
+});
 //상권분석 시, 소분류 별 점수 구하기
 
 //전역변수인 각 업종별 밀집도에서의 중위값 median
