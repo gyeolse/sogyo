@@ -8,16 +8,54 @@ var connection = mysql.createConnection({
     user:'root',
     database: 'biz',
     password: '1234',
-    port:3306,
-    multipleStatements: true //다중 쿼리
+    port:3306
+    //multipleStatements: true //다중 쿼리
 });
 
+connection.connect();
+
+var pop=[];
+var cntbylow=[];
+
+
+var sql1="select t1.population, t2.lowerCategory,count(*) as cnt from bizzone as t1 join store as t2 on t1.localNo=t2.bizZone_localNo group by t2.lowerCategory";
+connection.query(sql1,function(err,rows,fields){
+    if(err){
+        console.log(err);
+    }else{
+        for(var i=0;i<rows.length;i++){
+            pop[i]=rows[i].population;
+            cntbylow[i]=rows[i].cnt;
+        }
+        get_median(pop,cntbylow);
+    }
+})
 //상권분석 시, 소분류 별 점수 구하기
 
 //전역변수인 각 업종별 밀집도에서의 중위값 median
 //21개의 density=lowercnt/population의 중위값
-var population;
 var median;
+function get_median(pop,cntbylow){
+    var dens=[];
+    for(var i=0;i<cntbylow.length;i++){
+        dens[i]=cntbylow[i]/pop[i];
+    }
+    dens.sort();
+    median=getMedian(dens);
+    console.log(median);
+}
+function getMedian(array) {
+    if (array.length == 0) return NaN; // 빈 배열은 에러 반환(NaN은 숫자가 아니라는 의미임)
+    var center = parseInt(array.length / 2); // 요소 개수의 절반값 구하기
+  
+    if (array.length % 2 == 1) { // 요소 개수가 홀수면
+      return array[center]; // 홀수 개수인 배열에서는 중간 요소를 그대로 반환
+    } else {
+      return (array[center - 1] + array[center]) / 2.0; // 짝수 개 요소는, 중간 두 수의 평균 반환
+    }
+  }
+  
+
 //1. 매출추이 점수 구하는 함수
 function salesprogress(pre,now){
     //pre: 직전 분기, now: 해당 분기
@@ -94,7 +132,7 @@ var lowerCtg;
 
 switch(lowerCtg){
     case "커피전문점/카페/다방":
-        var total=
+        
         break;
     case "패스트푸드":
         break;

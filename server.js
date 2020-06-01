@@ -16,9 +16,20 @@ var connection = mysql.createConnection({
         host: 'localhost',
         user:'root',
         database: 'biz',
-        password: '0000',
+        password: '1234',
         port:3306
 });
+
+var sql1="select t1.population, t2.lowerCategory,count(*) as cnt from bizzone as t1 join store as t2 on t1.localNo=t2.bizZone_localNo group by t2.lowerCategory";
+connection.query(sql1,function(err,result){
+    if(err){
+        console.log(err);
+    }else{
+        for(var i=0;i<result.length;i++){
+            console.log(result[i].cnt);
+        }
+    }
+})
 
 //?��권분?�� 그래?�� 분기�? 매출?��
 app.get('/CommercialAnalyze',function(req,res){
