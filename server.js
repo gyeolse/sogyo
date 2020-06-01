@@ -1,3 +1,4 @@
+//test
 
 var mysql = require('mysql'); 
 var express = require('express');
@@ -19,7 +20,7 @@ var connection = mysql.createConnection({
         port:3306
 });
 
-//?ƒê¶Œë¶„?„ ê·¸ë˜?”„ ë¶„ê¸°ë³? ë§¤ì¶œ?•¡
+//?ï¿½ï¿½ê¶Œë¶„?ï¿½ï¿½ ê·¸ë˜?ï¿½ï¿½ ë¶„ê¸°ï¿½? ë§¤ì¶œ?ï¿½ï¿½
 app.get('/CommercialAnalyze',function(req,res){
         var sql="select quarter,lowerCategory, qt_sales from sales;";
         connection.query(sql,function(err,result){
