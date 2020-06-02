@@ -1,2 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="Category">
+        <item>커피전문점/카페/다방</item>
+        <item>패스트푸드</item>
+        <item>한식/백반/한정식</item>
+        <item>국수/만두/칼국수</item>
+        <item>후라이드/양념치킨
+</item>
+        <item>곱창/양구이전문
+</item>
+        <item>라면김밥분식
+</item>
+        <item>중국음식/중국집
+</item>
+        <item>동남아음식
+</item>
+        <item>제과점
+</item>
+        <item>도시락전문
+</item>
+        <item>양식
+</item>
+        <item>유흥주점
+</item>
+        <item>피자전문
+</item>
+        <item>죽전문점
+</item>
+        <item>일식/수산물
+</item>
+        <item>족발/보쌈전문
+</item>
+        <item>아이스크림판매
+</item>
+        <item>떡볶이전문
+</item>
+        <item>갈비/삼겹살
+</item>
+        <item>닭/오리요리
+</item>
+    </string-array>
+
+</resources>

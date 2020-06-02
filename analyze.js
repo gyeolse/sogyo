@@ -4,20 +4,75 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
     user:'root',
     database: 'biz',
-    password: '1234',
-    port:3306,
-    multipleStatements: true //다중 쿼리
+    password: '12341234',
+    port:3306
+    //multipleStatements: true //다중 쿼리
 });
 
+connection.connect();
+
+var pop=[];
+var cntbylow=[];
+
+//인구수, 업종별 가게 수
+var sql1="select t1.population, t2.lowerCategory,count(*) as cnt from bizZone as t1 join store as t2 on t1.localNo=t2.bizZone_localNo group by t2.lowerCategory";
+//업종별 지금 분기, 이전 분기 매출액
+var sql2="select quarter,qt_sales,lowerCategory from sales where quarter=1 or quarter=2"; //현재 6월이므로 2분기, 이전분기는 1분기
+//연령대 유동인구
+var sql3="select sum(population) from Floating_people where age="+"필요한 나이대";
+//연령대 상주인구
+var sql4="select sum(population) from Living_people where age="+"필요한 나이대";
+//시간대 유동인구
+var sql3="select sum(population) from Floating_people where time="+"필요한 시간대";
+//성별 유동인구
+var sql3="select sum(population) from Floating_people where gender='여성'";
+
+
+//전체 유동인구 수& 상주인구 수
+var floating="select sum(population) from Floating_people";
+var living="select sum(population) from Living_people";
+connection.query(sql1,function(err,rows,fields){
+    if(err){
+        console.log(err);
+    }else{
+        var count=0;
+        for(var i=0;i<rows.length;i++){
+            pop[i]=rows[i].population;
+            cntbylow[i]=rows[i].cnt;
+            count++;
+        }
+        console.log(count);
+    }
+});
 //상권분석 시, 소분류 별 점수 구하기
 
 //전역변수인 각 업종별 밀집도에서의 중위값 median
 //21개의 density=lowercnt/population의 중위값
-var population;
 var median;
+function get_median(pop,cntbylow){
+    var dens=[];
+    for(var i=0;i<cntbylow.length;i++){
+        dens[i]=cntbylow[i]/pop[i];
+    }
+    dens.sort();
+    median=getMedian(dens);
+    console.log(median);
+}
+function getMedian(array) {
+    if (array.length == 0) return NaN; // 빈 배열은 에러 반환(NaN은 숫자가 아니라는 의미임)
+    var center = parseInt(array.length / 2); // 요소 개수의 절반값 구하기
+  
+    if (array.length % 2 == 1) { // 요소 개수가 홀수면
+      return array[center]; // 홀수 개수인 배열에서는 중간 요소를 그대로 반환
+    } else {
+      return (array[center - 1] + array[center]) / 2.0; // 짝수 개 요소는, 중간 두 수의 평균 반환
+    }
+  }
+  
+
 //1. 매출추이 점수 구하는 함수
 function salesprogress(pre,now){
     //pre: 직전 분기, now: 해당 분기
@@ -57,15 +112,32 @@ function rivals(lowercnt){
     return score;
 }
 //3. 연령대 유동인구 점수 구하는 함수
-function ageFloat(){
-    //1:35
-    //2:~
-    //3:65
+function ageFloat(needs){
+    var ratio=needs/population;
     var score;
+    if(ratio<0.35){
+        score=1;
+    }
+    else if(ratio>=0.35&&ratio<0.65){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     return score;
 }
 //4. 연령대 상주인구 점수 구하는 함수
-function ageLiving(){
+function ageLiving(needs){
+    var ratio=needs/population;
+    if(ratio<0.35){
+        score=1;
+    }
+    else if(ratio>=0.35&&ratio<0.65){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     //1:35
     //2:~
     //3:65
@@ -73,16 +145,34 @@ function ageLiving(){
     return score;
 }
 //5. 시간대 유동인구 점수 구하는 함수
-function timeFloat(){
-    //겹칠 가능성 있으면 인구수 합*0.6
-    //1:35
-    //2:~
-    //3:65
+function timeFloat(needs){
+    //점심 저녁 야식 시간대 중 겹치는 시간 2개 이상->인구수 합*0.6
+    //을 어떻게 짜야할가요?
+    var ratio=needs/population;
+    if(ratio<0.35){
+        score=1;
+    }
+    else if(ratio>=0.35&&ratio<0.65){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     var score;
     return score;
 }
 //6. 성별 유동인구 점수 구하는 함수
-function genderFloat(gender){
+function genderFloat(needs){
+    var ratio=needs/population;
+    if(ratio<0.4){
+        score=1;
+    }
+    else if(ratio>=0.4&&ratio<0.5){
+        score=2;
+    }
+    else{
+        score=3;
+    }
     var score;
     //0.4이하:1, 0.4~0.5:2, 그 이상:3
     return score;
@@ -94,7 +184,6 @@ var lowerCtg;
 
 switch(lowerCtg){
     case "커피전문점/카페/다방":
-        var total=
         break;
     case "패스트푸드":
         break;
