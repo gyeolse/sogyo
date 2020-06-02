@@ -33,7 +33,7 @@ public class VolleyExampleActivity extends AppCompatActivity {
 
     public int StoreNo;
     public String BizName;
-
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,5 +70,30 @@ public class VolleyExampleActivity extends AppCompatActivity {
 
         queue.add(jsonArrayRequest);
     }
+
+ */
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_volley_example);
+    tv = findViewById(R.id.tvMain);
+    queue = Volley.newRequestQueue(this);
+    String url="http://10.0.2.2:3000/judgement";
+
+    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            tv.setText(response);
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+        }
+    });
+
+    stringRequest.setTag(TAG);
+    queue.add(stringRequest);
+}
 }
 
