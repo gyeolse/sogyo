@@ -1,6 +1,6 @@
 //test
 
-var mysql = require('mysql'); 
+var mysql = require('mysql');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
@@ -21,7 +21,7 @@ var connection = mysql.createConnection({
 });
 
 
-//?��권분?�� 그래?�� 분기�? 매출?��
+//?  권분?   그래?   분기 ? 매출?
 app.get('/CommercialAnalyze',function(req,res){
         var sql="select quarter,lowerCategory, qt_sales from sales;";
         connection.query(sql,function(err,result){
@@ -308,7 +308,7 @@ app.get('/CommercialAnalyze/west' , function (req, res) {
                                 console.log("success!");
                         }
                 })
-        });    
+        });
         app.get('/CommercialAnalyze/duck', function (req, res) {
                 var sql = "select qt_sales, quarter from sales where lowerCategory='닭/오리요리'";
                 connection.query(sql, function (err, result) {
@@ -320,7 +320,7 @@ app.get('/CommercialAnalyze/west' , function (req, res) {
                                 console.log("success!");
                         }
                 })
-        });            
+        });
 
 
 app.get('/history/location',function(req,res){

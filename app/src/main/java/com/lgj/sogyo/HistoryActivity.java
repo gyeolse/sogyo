@@ -1,8 +1,11 @@
+//history activity
+
 package com.lgj.sogyo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
@@ -13,12 +16,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.navigation.NavigationView;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -36,6 +42,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -48,10 +56,11 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     //For Volley
     private static final String TAG = "MAIN";
     private RequestQueue queue; //volley가 queue에 response 넣기
-    public String url = "http://10.0.2.2:3000/history/location"; //보낼 URL. 임의로 생성
+    public String url = "http://10.0.2.2:3000/history/location"; //보낼 URL.
     public ArrayList<Double> latitude_list = new ArrayList<>();
     public ArrayList<Double> longitude_list = new ArrayList<>();
-    public ClusterManager<MyItem> mClusterManager;
+    public ClusterManager<MyItem> mClusterManager; //clustering을 하기 위한 cluster manager 객체
+    public Map<String, GoogleMap.InfoWindowAdapter> adapterMap = new HashMap<>(); //InfoAdapter 넣을 Map 객체
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +68,7 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
         final LoadingDialog loadingDialog = new LoadingDialog(HistoryActivity.this);
         Handler handler = new Handler();
         loadingDialog.startLoadingDialog();
-
+        //로딩화면 표시
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -69,13 +78,12 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        //FOR VOLLEY
+        //volley 큐 초기화
         queue = Volley.newRequestQueue(this); //큐 초기화
         //2 MAP FRAGMENT
         fragmentManager = getFragmentManager();
         mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.fragment_main_mv);
         mapFragment.getMapAsync(this);
-
         //3
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sogyo");
@@ -113,59 +121,72 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
     }
-
 ////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void onMapReady(GoogleMap googleMap){
+    public void onMapReady(final GoogleMap googleMap){
         final GoogleMap googleMap1 = googleMap;
+        mClusterManager = new ClusterManager<>(this,googleMap1);
 
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-            Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-        @Override
-        public void onResponse(JSONArray response) {
-            try {
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject jsonObject = response.getJSONObject(i);
-                    double longitude = jsonObject.getDouble("longitude");
-                    double latitude = jsonObject.getDouble("latitude");
-                    String BizName = jsonObject.getString("BizName");
-                    MyItem offsetItem = new MyItem(latitude,longitude);
-                    mClusterManager.addItem(offsetItem);
-                    longitude_list.add(longitude);
-                    latitude_list.add(latitude);
+                Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        double longitude = jsonObject.getDouble("longitude");
+                        double latitude = jsonObject.getDouble("latitude");
+                        String BizName = jsonObject.getString("BizName");
+                        String upperCategory = jsonObject.getString("upperCategory");
+                        String floor = jsonObject.getString("floor");
+                        int IsOpen = jsonObject.getInt("IsOpen");
+                        String openYear = jsonObject.getString("openYear").substring(0,7);
+                        String closeYear = jsonObject.getString("closeYear");
+                        if(floor=="null"){floor="1";}
+                        String Isopenstr="";
+                        if(IsOpen==1){
+                            Isopenstr= "O";
+                        }
+                        else{
+                            Isopenstr="X";
+                        }
+                        if(closeYear!="null"){ closeYear=closeYear.substring(0,7); }
+                        else{ closeYear=""; }
+/////////////////////////INFO adapter 를 위한 과정
+                        MyItem offsetItem = new MyItem(latitude,longitude,BizName,upperCategory,floor,Isopenstr,openYear,closeYear);
+                        LatLng latLng1 = new LatLng(latitude,longitude);
 
-                    LatLng location = new LatLng(latitude_list.get(i), longitude_list.get(i));
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(location);
-                    googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-//                    googleMap1.addMarker(markerOptions).setTitle(BizName);
-                    View infoWindow = getLayoutInflater().inflate(R.layout.historyinfo_2,null);
+                        MarkerOptions markerOptions = new MarkerOptions().position(latLng1).title(BizName);
+                        Marker marker = googleMap1.addMarker(markerOptions);
+                        View infoWindow = getLayoutInflater().inflate(R.layout.historyinfo_2,null);
+                        DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow,offsetItem);
+                        CentralInfoWindowAdapter centralInfoWindowAdapter = new CentralInfoWindowAdapter(adapterMap);
 
-                    DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow);
-                    googleMap1.setInfoWindowAdapter(driverInfoAdapter);
+                        adapterMap.put(marker.getId(),driverInfoAdapter);
+                        googleMap1.setInfoWindowAdapter(centralInfoWindowAdapter);
+////////////////////////////////////////////////////////////////////////////
+
+                        googleMap1.setOnCameraIdleListener(mClusterManager);
+                        googleMap1.setOnMarkerClickListener(mClusterManager);
+                        mClusterManager.addItem(offsetItem);
+
+//                        MarkerOptions markerOptions = new MarkerOptions();
+//                        markerOptions.position(location);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) { } });
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { } });
 
         //Clustering
         LatLng base_location = new LatLng(37.451095, 126.656996);
         googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(base_location, 15));
-
-        mClusterManager = new ClusterManager<>(this,googleMap1);
         googleMap1.setOnCameraIdleListener(mClusterManager);
         googleMap1.setOnMarkerClickListener(mClusterManager);
 
-    queue.add(jsonArrayRequest); //queue에 request 추가
-
+        queue.add(jsonArrayRequest); //queue에 request 추가
     } //ONMAPREADY 종료 시점.
-
-    //마커를 비추고 있는 화면을 비추는 카메라를 띄워준다고 생각하자.
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,16));
-
-
 } //HISTORY ACTIVITY 종료 시점

@@ -9,13 +9,13 @@
 
 
     <TextView
-        android:gravity="center"
-        android:textAlignment="center"
+        android:id="@+id/BizName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="StoreName"
-        android:textColor="#090909"/>
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#090909"
+        android:textSize="20sp" />
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -29,16 +29,6 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="가게명"
-                android:textColor="#000000"
-                android:textSize="13sp"
-                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +73,43 @@
                 android:padding="10dp"
                 android:text="폐업연도"
                 android:textColor="#000000"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
+        </TableRow>
+
+        <TableRow
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/floor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/IsOpen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/openYear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/closeYear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
         </TableRow>
 
 
