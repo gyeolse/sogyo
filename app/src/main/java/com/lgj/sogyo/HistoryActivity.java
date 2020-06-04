@@ -206,6 +206,10 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                     public boolean onClusterItemClick(MyItem myItem) {
                         Toast.makeText(HistoryActivity.this,myItem.cnt+"이력이 있습니다. ",Toast.LENGTH_SHORT).show();
                         Intent myIntent = new Intent(HistoryActivity.this, HistoryDetailInfo.class);
+                        double a = myItem.getPosition().latitude;
+                        double b = myItem.getPosition().longitude;
+                        myIntent.putExtra("longitude",a);
+                        myIntent.putExtra("latitude",b);
                         startActivity(myIntent);
                         return false;
 
