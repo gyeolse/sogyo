@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -174,8 +175,8 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                             String cnt_ = Count_list.get(i).toString()+"개의 점포";
                             MyItem offsetItem = new MyItem(location,cnt_);
                             mClusterManager.addItem(offsetItem);
-                            MarkerOptions markerOptions = new MarkerOptions().position(location).title(cnt_);
-                            googleMap1.addMarker(markerOptions);
+//                            MarkerOptions markerOptions = new MarkerOptions().position(location).title(cnt_);
+//                            googleMap1.addMarker(markerOptions);
 
                         }
                     }
@@ -192,11 +193,27 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
             public void onErrorResponse(VolleyError error) { } });
         queue.add(jsonArrayRequest); //queue에 request 추가
 
-        //Clustering
+        //BASE LOCATION 세팅
         LatLng base_location = new LatLng(37.451095, 126.656996);
         googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(base_location, 15));
+        //Clustering 세팅
         googleMap1.setOnCameraIdleListener(mClusterManager);
         googleMap1.setOnMarkerClickListener(mClusterManager);
+
+        mClusterManager.setOnClusterItemClickListener(
+                new ClusterManager.OnClusterItemClickListener<MyItem>() {
+                    @Override
+                    public boolean onClusterItemClick(MyItem myItem) {
+                        Toast.makeText(HistoryActivity.this,myItem.cnt+"이력이 있습니다. ",Toast.LENGTH_SHORT).show();
+                        Intent myIntent = new Intent(HistoryActivity.this, HistoryDetailInfo.class);
+                        startActivity(myIntent);
+                        return false;
+
+                    }
+                }
+        );
+
+
 
     } //ONMAPREADY 종료 시점.
 } //HISTORY ACTIVITY 종료 시점
