@@ -1,5 +1,5 @@
 //DriverInfoAdapter.java
-
+/*
 package com.lgj.sogyo;
 import android.util.Log;
 import android.view.LayoutInflater;

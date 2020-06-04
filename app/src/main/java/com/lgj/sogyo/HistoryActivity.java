@@ -42,10 +42,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class HistoryActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    public static <Integer, LatLng> Integer getKey(Map<Integer, LatLng> map,  LatLng value) {
+        for (Integer key : map.keySet()) {
+            if (value.equals(map.get(key))) {
+                return key;
+            }
+        }
+        return null;
+    }
 
     private FragmentManager fragmentManager;
     private MapFragment mapFragment;
@@ -57,10 +69,12 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     private static final String TAG = "MAIN";
     private RequestQueue queue; //volley가 queue에 response 넣기
     public String url = "http://10.0.2.2:3000/history/location"; //보낼 URL.
-    public ArrayList<Double> latitude_list = new ArrayList<>();
-    public ArrayList<Double> longitude_list = new ArrayList<>();
     public ClusterManager<MyItem> mClusterManager; //clustering을 하기 위한 cluster manager 객체
     public Map<String, GoogleMap.InfoWindowAdapter> adapterMap = new HashMap<>(); //InfoAdapter 넣을 Map 객체
+
+    //같은 위치에 해당하는 가게들을 뭉치기 위해서 생성함
+    ArrayList<Integer> Count_list = new ArrayList<>(Collections.nCopies(1500,0));
+    HashMap<Integer,LatLng> LatLngMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +140,7 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(final GoogleMap googleMap){
         final GoogleMap googleMap1 = googleMap;
         mClusterManager = new ClusterManager<>(this,googleMap1);
-
+//1. Volley를 통해서 서버에서 받고, 위치에 따라 가게들을 묶어주는 작업 처리 과정.
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -136,43 +150,39 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                         JSONObject jsonObject = response.getJSONObject(i);
                         double longitude = jsonObject.getDouble("longitude");
                         double latitude = jsonObject.getDouble("latitude");
-                        String BizName = jsonObject.getString("BizName");
-                        String upperCategory = jsonObject.getString("upperCategory");
-                        String floor = jsonObject.getString("floor");
-                        int IsOpen = jsonObject.getInt("IsOpen");
-                        String openYear = jsonObject.getString("openYear").substring(0,7);
-                        String closeYear = jsonObject.getString("closeYear");
-                        if(floor=="null"){floor="1";}
-                        String Isopenstr="";
-                        if(IsOpen==1){
-                            Isopenstr= "O";
+        //같은 위치에 해당하는 애들 묶어주는 작업
+                        LatLng tempLatLng = new LatLng(latitude,longitude);
+                        if(i==0){ //처음 INIT
+                            LatLngMap.put(i,tempLatLng);
+                            Count_list.set(0,1);
                         }
-                        else{
-                            Isopenstr="X";
+                        else { //i가 0이 아닐 때 무조건 실행이 됨.
+                            if(LatLngMap.containsValue(tempLatLng)==true){
+                                int tempKey = getKey(LatLngMap,tempLatLng); //같은 value가 있는 key를 탐색
+                                int newCnt = Count_list.get(tempKey)+1; //갯수를 +1 카운트해줌.
+                                Count_list.set(tempKey,newCnt); //새롭게 카운트된 갯수를 세팅.
+                            }
+                            else {
+                                LatLngMap.put(i, tempLatLng); //i번째에 집어넣어야 함.
+                                Count_list.set(i,1); //i번째에 1. 가게 하나가 있다는 뜻.
+                            }
                         }
-                        if(closeYear!="null"){ closeYear=closeYear.substring(0,7); }
-                        else{ closeYear=""; }
-/////////////////////////INFO adapter 를 위한 과정
-                        MyItem offsetItem = new MyItem(latitude,longitude,BizName,upperCategory,floor,Isopenstr,openYear,closeYear);
-                        LatLng latLng1 = new LatLng(latitude,longitude);
-
-                        MarkerOptions markerOptions = new MarkerOptions().position(latLng1).title(BizName);
-                        Marker marker = googleMap1.addMarker(markerOptions);
-                        View infoWindow = getLayoutInflater().inflate(R.layout.historyinfo_2,null);
-                        DriverInfoAdapter driverInfoAdapter = new DriverInfoAdapter(infoWindow,offsetItem);
-                        CentralInfoWindowAdapter centralInfoWindowAdapter = new CentralInfoWindowAdapter(adapterMap);
-
-                        adapterMap.put(marker.getId(),driverInfoAdapter);
-                        googleMap1.setInfoWindowAdapter(centralInfoWindowAdapter);
-////////////////////////////////////////////////////////////////////////////
-
-                        googleMap1.setOnCameraIdleListener(mClusterManager);
-                        googleMap1.setOnMarkerClickListener(mClusterManager);
-                        mClusterManager.addItem(offsetItem);
-
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        markerOptions.position(location);
                     }
+                    for(int i=0;i<LatLngMap.size();i++){
+                        if(Count_list.get(i)!=0){
+                            LatLng location = LatLngMap.get(i);
+                            String cnt_ = Count_list.get(i).toString()+"개의 점포";
+                            MyItem offsetItem = new MyItem(location,cnt_);
+                            mClusterManager.addItem(offsetItem);
+                            MarkerOptions markerOptions = new MarkerOptions().position(location).title(cnt_);
+                            googleMap1.addMarker(markerOptions);
+
+                        }
+                    }
+                    //잘되는지 TEST. LOG화면에 출력
+//                    for(int i=0;i<LatLngMap.size();i++){
+//                        System.out.println("Count List의 크기 "+ Count_list.get(i));
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -180,6 +190,7 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) { } });
+        queue.add(jsonArrayRequest); //queue에 request 추가
 
         //Clustering
         LatLng base_location = new LatLng(37.451095, 126.656996);
@@ -187,6 +198,5 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
         googleMap1.setOnCameraIdleListener(mClusterManager);
         googleMap1.setOnMarkerClickListener(mClusterManager);
 
-        queue.add(jsonArrayRequest); //queue에 request 추가
     } //ONMAPREADY 종료 시점.
 } //HISTORY ACTIVITY 종료 시점
