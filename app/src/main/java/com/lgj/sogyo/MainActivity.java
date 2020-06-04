@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.menu_Commercial_Analyze:
-                        intent = new Intent(MainActivity.this,CommercialAnalyze.class);
+                        intent = new Intent(MainActivity.this,CommercialAnalyze_main.class);
                         startActivity(intent);
                         return true;
                     case R.id.menu_history:
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,CommercialAnalyze.class);
+                Intent intent = new Intent(MainActivity.this,CommercialAnalyze_main.class);
                 startActivity(intent);
             }
         });
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,VolleyExampleActivity.class);
+                Intent intent = new Intent(MainActivity.this,judgementActivity.class);
                 startActivity(intent);
             }
         });

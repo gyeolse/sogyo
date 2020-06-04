@@ -65,7 +65,11 @@ app.get('/CommercialAnalyze/cafe', function (req, res) {
                 }
         })
 });
-
+app.get('/CommercialAnalyze_main',function(req,res){
+var number = 3;
+res.json(number);
+console.log("number transmit");
+});
 app.get('/CommercialAnalyze/fastfood', function (req, res) {
         var sql = "select qt_sales, quarter from sales where lowerCategory='패스트푸드'";
         connection.query(sql, function (err, result) {

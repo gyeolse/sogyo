@@ -39,7 +39,7 @@ public class judgementActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.menu_Commercial_Analyze:
-                        intent = new Intent(judgementActivity.this,CommercialAnalyze.class);
+                        intent = new Intent(judgementActivity.this,CommercialAnalyze_main.class);
                         startActivity(intent);
                         return true;
                     case R.id.menu_history:

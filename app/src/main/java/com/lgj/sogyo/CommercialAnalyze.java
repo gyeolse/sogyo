@@ -77,7 +77,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.menu_Commercial_Analyze:
-                        intent = new Intent(CommercialAnalyze.this, CommercialAnalyze.class);
+                        intent = new Intent(CommercialAnalyze.this, CommercialAnalyze_main.class);
                         startActivity(intent);
                         return true;
                     case R.id.menu_history:
