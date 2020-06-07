@@ -1,21 +1,31 @@
 package com.lgj.sogyo;
 
 public class Store {
+    public int StoreNo;
+    public String BizName;
+    public String upperCategory;
+    public String lowerCategory;
+    public String address;
+    public String floor;
+    public double longitude;
+    public double latitude;
+    public String IsOpenStr;
+    public String openYear;
+    public String closeYear;
+    public int Sales;
+    public int IsFrancise;
+    public int bizZone_localNo;
 
-    private int StoreNo;
-    private String BizName;
-    private String upperCategory;
-    private String lowerCategory;
-    private String address;
-    private int floor;
-    private double longitude;
-    private double latitude;
-    private int IsOpen;
-    private String openYear;
-    private String closeYear;
-    private int Sales;
-    private int IsFrancise;
-    private int bizZone_localNo;
+
+    //상점이름, 카테고리, 층수, 운영여부, 개점년도, 폐업년도,
+    Store(String BizName, String upperCategory, String floor, String IsOpenStr, String openYear, String closeYear){
+        this.BizName = BizName;
+        this.upperCategory = upperCategory;
+        this.floor = floor;
+        this.IsOpenStr = IsOpenStr;
+        this.openYear = openYear;
+        this.closeYear = closeYear;
+    }
 
     public int getStoreNo() {
         return StoreNo;
@@ -57,11 +67,11 @@ public class Store {
         this.address = address;
     }
 
-    public int getFloor() {
+    public String getFloor() {
         return floor;
     }
 
-    public void setFloor(int floor) {
+    public void setFloor(String floor) {
         this.floor = floor;
     }
 
@@ -81,12 +91,12 @@ public class Store {
         this.latitude = latitude;
     }
 
-    public int getIsOpen() {
-        return IsOpen;
+    public String getIsOpenStr() {
+        return IsOpenStr;
     }
 
-    public void setIsOpen(int isOpen) {
-        IsOpen = isOpen;
+    public void setIsOpenStr(String isOpenStr) {
+        IsOpenStr = isOpenStr;
     }
 
     public String getOpenYear() {
