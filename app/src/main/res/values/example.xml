@@ -41,4 +41,9 @@
 </item>
     </string-array>
 
+    <string-array name="Floating_Option">
+        <item>시간대</item>
+        <item>나이</item>
+        <item>성별</item>
+    </string-array>
 </resources>

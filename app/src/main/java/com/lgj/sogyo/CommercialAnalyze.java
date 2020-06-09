@@ -44,6 +44,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Random;
 import android.graphics.Color;
+
 public class CommercialAnalyze extends AppCompatActivity {
 
     NavigationView navigationView;
