@@ -129,7 +129,25 @@ public class CommercialAnalyze_main extends AppCompatActivity implements OnMapRe
             public void onResponse(String response) {
                 System.out.println(response);//response는 일단 임의의값으로 놔두었고 서버에 등급값요청해서 받은걸로 처리해야함
 
-                int resID=getResources().getIdentifier("tv_"+response,"id","com.lgj.sogyo");
+                int resID;
+                double responseNum=Double.parseDouble(response);
+                if(responseNum>=1 && responseNum<1.4){
+                    resID=getResources().getIdentifier("tv_5","id","com.lgj.sogyo");
+                }
+                else if(responseNum>=1.4&&responseNum<1.8){
+                    resID=getResources().getIdentifier("tv_4","id","com.lgj.sogyo");
+                }
+                else if(responseNum>=1.8&&responseNum<2.2){
+                    resID=getResources().getIdentifier("tv_3","id","com.lgj.sogyo");
+                }
+                else if(responseNum>=2.2&&responseNum<2.6){
+                    resID=getResources().getIdentifier("tv_2","id","com.lgj.sogyo");
+                }
+                else{
+                    resID=getResources().getIdentifier("tv_1","id","com.lgj.sogyo");
+                }
+
+//                int resID=getResources().getIdentifier("tv_"+response,"id","com.lgj.sogyo");
 
                 TextView tv=findViewById(resID);
                 tv.setBackgroundColor(Color.WHITE);

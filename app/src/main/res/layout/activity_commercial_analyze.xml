@@ -46,7 +46,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
 
-            android:layout_marginBottom="63dp"
+            android:layout_marginBottom="300dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,13 +56,34 @@
 
         </com.github.mikephil.charting.charts.LineChart>
 
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="411dp"
+            android:layout_height="228dp"
+            android:fillViewport="true"
             app:layout_constraintStart_toStartOf="@+id/chart"
-            app:layout_constraintTop_toBottomOf="@+id/chart" />
+            app:layout_constraintTop_toBottomOf="@+id/chart">
+
+            <ListView
+                android:id="@+id/lst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/chart"
+                app:layout_constraintTop_toBottomOf="@+id/chart">
+
+
+            </ListView>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="적용하기"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--        AppBar도 material 라이브러리가 있어야 사용 가능하다.-->
