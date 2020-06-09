@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -48,6 +49,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+//////////////////////////////////////////////////20200605
+
+//마커의 갯수 카운트가 1씩 차이가 난다. 이거 해결하도록 하자. 모든 가게들이 다 그렇기 때문에, 해당 문제만 해결하면 될 것.
 
 public class HistoryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
