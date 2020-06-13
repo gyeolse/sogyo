@@ -1,10 +1,20 @@
 package com.lgj.sogyo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,6 +23,8 @@ public class judgementActivity extends AppCompatActivity {
     NavigationView navigationView;
     DrawerLayout  drawerLayout;
     ActionBarDrawerToggle drawerToggle;
+    Spinner spinner;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +33,9 @@ public class judgementActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("Sogyo");
 
+        queue= Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:3000/judgement";
+        spinner.setPrompt("Select Category");
         setSupportActionBar(toolbar);
         navigationView=findViewById(R.id.nav);
         navigationView.setItemIconTintList(null);// 사이드 메뉴에 아이콘 색깔을 원래 아이콘 색으로
@@ -54,6 +69,18 @@ public class judgementActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
+        spinner=(Spinner)findViewById(R.id.ctg_spinner);
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.Category,android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
+
+            }
+            public void onNothingSelected(AdapterView<?> parent){
+
+            }
+        });
+        }
 //
 }

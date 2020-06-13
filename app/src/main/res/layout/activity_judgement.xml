@@ -53,4 +53,24 @@
         app:menu="@menu/navi_menu"
         />
 
+    <LinearLayout
+        android:id="@+id/check_ctg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="카테고리를 선택하세요"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
+        <Spinner
+            android:id="@+id/ctg_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>
