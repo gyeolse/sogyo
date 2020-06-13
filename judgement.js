@@ -14,8 +14,8 @@ var connection = mysql.createConnection({
         host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
         user:'root',
         database: 'biz',
-        port:3306,
-        password:'12341234'
+        password: '12341234',
+        port:3306
 });
 
 //전역변수
@@ -38,7 +38,7 @@ var living_50;
 // var evening_floating;
 // var night_floating;
 
-var male_floating;
+//var male_floating;
 var female_floating;
 
 var total_population;
@@ -55,9 +55,9 @@ connection.connect();
 // var total_score=score_density("유흥주점")*0.3+score_sales("유흥주점")*0.3+score_floating(floating_20+floating_30+floating_40+floating_50)*0.1+score_living(living_20+living_30+living_40+living_50)*0.1+score_time(evening+night,2)*0.2;
 // console.log(total_score);
 var avg = 0;
-bizZone_score();
-app.use('/CommercialAnalyze_main',function(req,res){
-  
+//bizZone_score();
+app.use('/CommercialAnalyze_main',async(req,res)=>{
+    await bizZone_score();
     res.json(avg);
     
 });
@@ -66,11 +66,10 @@ async function bizZone_score() {
    await get_popluation();
     await get_median();
     var score_arr=await callCategory();
-    setTimeout(getavg,20000,score_arr);
+    setTimeout(getavg,12000,score_arr);
     //console.log(avg);
 }
 
-// bizZone_score();
 
 function getavg(category_score) {
         var sum=0;
@@ -566,36 +565,6 @@ function score_density(lowerCategory) {
 
 
 
-//매출 추이에 따른 점수
-// function score_sales(lowerCategory) {
-//     //pre: 직전 분기, now: 해당 분기
-//     var sql="select quarter,qt_sales from sales where lowerCategory='"+lowerCategory+"' and (quarter=3 or quarter=4)";
-//     connection.query(sql,function(err,rows,fields){
-//         if(err){
-//             console.log(err);
-//         }
-//         else{
-//             var qt_sales_prev=rows[0].qt_sales;
-//             var qt_sales_current=rows[1].qt_sales;
-
-//             var variation = (qt_sales_current - qt_sales_prev) / qt_sales_current;
-//             var score;
-//             if (variation < -0.2) {
-//                 score = 1;
-//             }
-//             else if (variation >= -0.2 && variation < 0) {
-//                 score = 2;
-//             }
-//             else {
-//                 score = 3;
-//                 //증갑률이 0%이상 높은편
-//             }
-//             console.log(score);
-//             return score;
-//                 }
-//     })
-// }
-
 function score_sales(lowerCategory) {
     //pre: 직전 분기, now: 해당 분기
     return new Promise(function (resolve, reject) {
@@ -703,6 +672,89 @@ function score_gender(gender_population) {
 
 
 
+app.get('/CommercialAnalyze/bytime',function(req,res){
+        var sql="select time,sum(population) as pop from Floating_people group by time;";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+
+app.get('/CommercialAnalyze/byage',function(req,res){
+        var sql="select age,sum(population) as pop from Floating_people group by age;";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+
+app.get('/CommercialAnalyze/livingbyyear',function(req,res){
+        var sql="select year,sum(population) as pop from Living_people group by year;";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+
+app.get('/CommercialAnalyze/livingbygender',function(req,res){
+        var sql="select gender,sum(population) as pop from Living_people group by gender;";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+
+app.get('/CommercialAnalyze/livingbyage',function(req,res){
+        var sql="select age,sum(population) as pop from Living_people group by age;";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+
+app.get('/CommercialAnalyze/bygender',function(req,res){
+        var sql="select gender,sum(population) as pop from Floating_people group by gender;";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
 
 //?  권분?   그래?   분기 ? 매출?
 app.get('/CommercialAnalyze',function(req,res){
@@ -1019,7 +1071,7 @@ app.get('/history/location',function(req,res){
                         res.json(result);
                 }
 
-        })
+        });
 });
 
 app.get('/judgement',function(req,res){
@@ -1034,45 +1086,4 @@ app.get('/judgement',function(req,res){
                         console.log('success!!!!!');
                 }
         })
-});
-app.get('/CommercialAnalyze/bytime',function(req,res){
-        var sql="select time,sum(population) as pop from Floating_people group by time;";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/byage',function(req,res){
-        var sql="select age,sum(population) as pop from Floating_people group by age;";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/bygender',function(req,res){
-        var sql="select gender,sum(population) as pop from Floating_people group by gender;";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-});
+})
