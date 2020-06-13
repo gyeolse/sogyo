@@ -1,21 +1,15 @@
-var mysql = require('mysql');
-var express = require('express');
+var express = require("express");
+var mysql = require("mysql");
 var bodyParser = require('body-parser');
 var app = express();
-//var config = require('./config.json');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-app.listen(3000,'localhost',function(){
-        console.log('server is running....1');
-});
 
 var connection = mysql.createConnection({
-        host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
-        user:'root',
-        database: 'biz',
-        password: '12341234',
-        port:3306
+    host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
+    user: 'root',
+    database: 'biz',
+    password: '12341234',
+    port: 3306
+    //multipleStatements: true //다중 쿼리
 });
 
 //전역변수
@@ -54,23 +48,24 @@ connection.connect();
 // get_median();
 // var total_score=score_density("유흥주점")*0.3+score_sales("유흥주점")*0.3+score_floating(floating_20+floating_30+floating_40+floating_50)*0.1+score_living(living_20+living_30+living_40+living_50)*0.1+score_time(evening+night,2)*0.2;
 // console.log(total_score);
-var avg = 0;
-bizZone_score();
-app.use('/CommercialAnalyze_main',function(req,res){
-  
+
+
+
+app.get('/CommercialAnalyze_main',function(req,res){
+
     res.json(avg);
-    
 });
 
+var avg = 0;
 async function bizZone_score() {
    await get_popluation();
     await get_median();
     var score_arr=await callCategory();
-    setTimeout(getavg,11000,score_arr);
+    setTimeout(getavg,10000,score_arr);
     //console.log(avg);
 }
 
-// bizZone_score();
+bizZone_score();
 
 function getavg(category_score) {
         var sum=0;
@@ -79,7 +74,7 @@ function getavg(category_score) {
         }
         console.log("------------");
         //console.log(sum);
-        avg = sum / 21;
+        var avg = sum / 21;
         console.log(avg);
         
         
@@ -438,7 +433,6 @@ function get_popluation() {
         var sql3 = "select age,sum(population) as FP from Floating_people group by age";
         var sql4 = "select age,sum(population) as LP from Living_people group by age";
         var sql_time = "select time, sum(population) as TP from Floating_people group by time";
-       var gender_sql="select gender,sum(population) as GP from Floating_people group by gender";
         connection.query(sql_time, function (err, rows, fields) {
             if (err) {
                 console.log(err);
@@ -479,15 +473,6 @@ function get_popluation() {
                 living_40 = rows4[3].LP;
                 living_50 = rows4[4].LP;
                 total_living = living_10 + living_20 + living_30 + living_40 + living_50;
-            }
-        })
-        connection.query(gender_sql,function(err,g_rows,fields){
-            if(err){
-                console.log(err);
-            }
-            else{
-                female_floating=g_rows[0].GP;
-                male_floating=g_rows[1].GP;
             }
         })
         resolve(0);
@@ -699,343 +684,3 @@ function score_gender(gender_population) {
         resolve(score);
     })
 }
-//test
-
-
-
-
-//?  권분?   그래?   분기 ? 매출?
-app.get('/CommercialAnalyze',function(req,res){
-        var sql="select quarter,lowerCategory, qt_sales from sales;";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-});
-
-app.get('/analysis/details',function(req,res){
-        var sql="";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-});
-
-var ctgpath=['cafe','fastfood','korean','noodle','chicken','gobchang','ramen','china','thai','bakery','dosirak','west','drink','pizza','waterrice','japan','jokbal','icecream','ddeok','galbi','duck'];
-var ctglist=['커피전문점/카페/다방','패스트푸드','한식/백반/한정식','국수/만두/칼국수','후라이드/양념치킨','곱창/양구이전문','라면김밥분식','중국음식/중국집','동남아음식','제과점','도시락전문점','양식','유흥주점','피자전문','죽전문점','일식/수산물','족발/보쌈전문','아이스크림판매','떡볶이전문','갈비/삼겹살','닭/오리요리'];
-
-app.get('/CommercialAnalyze/cafe', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='커피전문점/카페/다방'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-app.get('/CommercialAnalyze_main',function(req,res){
-var number = 3;
-res.json(number);
-console.log("number transmit");
-});
-app.get('/CommercialAnalyze/fastfood', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='패스트푸드'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/korean', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='한식/백반/한정식'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/noodle' , function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='국수/만두/칼국수'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/chicken' , function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='후라이드/양념치킨'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/gobchang', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='곱창/양구이전문'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/ramen' , function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='라면김밥분식'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/china', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='중국음식/중국집'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/thai', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='동남아음식'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/bakery', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='제과점'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/dosirak', function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='도시락전문점'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
-app.get('/CommercialAnalyze/west' , function (req, res) {
-        var sql = "select qt_sales, quarter from sales where lowerCategory='양식'";
-        connection.query(sql, function (err, result) {
-                if (err) {
-                        console.log(err);
-                }
-                else {
-                        res.json(result);
-                        console.log("success!");
-                }
-        })
-});
-
- app.get('/CommercialAnalyze/drink', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='유흥주점'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/pizza', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='피자전문'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/waterrice', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='죽전문점'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/japan', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='일식/수산물'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/jokbal', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='족발/보쌈전문'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/icecream', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='아이스크림판매'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/ddeok' , function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='떡볶이전문'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/galbi', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='갈비/삼겹살'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-        app.get('/CommercialAnalyze/duck', function (req, res) {
-                var sql = "select qt_sales, quarter from sales where lowerCategory='닭/오리요리'";
-                connection.query(sql, function (err, result) {
-                        if (err) {
-                                console.log(err);
-                        }
-                        else {
-                                res.json(result);
-                                console.log("success!");
-                        }
-                })
-        });
-
-
-app.get('/history/location',function(req,res){
-       // console.log(req.query);
-        var sql = 'select * from store limit 100';
-        connection.query(sql,function(err,result){
-                var resultCode = 100;
-                var message = 'Error Occured!';
-
-                if(err){
-                        console.log(err);
-                } else{
-                        console.log(result);
-                        message = 'success!';
-                        console.log('success!!!!!');
-
-                        res.json(result);
-                }
-
-        });
-});
-
-app.get('/judgement',function(req,res){
-        var sql="";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-})
