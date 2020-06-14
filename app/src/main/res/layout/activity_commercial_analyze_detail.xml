@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_drawer"
+    tools:context=".CommercialAnalyze_detail">
+
+    <!--    1. 콘텐츠 영역-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ourblue">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"
+            android:theme="@style/AppTheme.Appbar"
+            android:layout_gravity="center">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/ourblue"
+
+                >
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="sogyo"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="30dp"-->
+                <!--                    />-->
+            </androidx.appcompat.widget.Toolbar>
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <Button
+            android:id="@+id/button_sales"
+            android:layout_width="244dp"
+            android:layout_height="54dp"
+            android:background="@drawable/custom_button"
+            android:text="매출액"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.325" />
+
+        <Button
+            android:background="@drawable/custom_button"
+            android:id="@+id/button_floating"
+            android:layout_width="244dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="71dp"
+            android:text="유동인구(시간대별, 나이대별, 성별별)"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/button_sales"
+            app:layout_constraintTop_toBottomOf="@+id/button_sales" />
+        <Button
+            android:background="@drawable/custom_button"
+            android:id="@+id/button_living"
+            android:layout_width="244dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="71dp"
+            android:text="상주인구(연령대별, 나이대별, 성별별)"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/button_floating"
+            app:layout_constraintTop_toBottomOf="@+id/button_floating" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--        AppBar도 material 라이브러리가 있어야 사용 가능하다.-->
+    <!--        AppBar는 기존 제목 색을 갖는다. 그래서 Toolbar에 색상이 입혀졌다.-->
+
+    <!--    2. 왼쪽 사이드 메뉴-->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/navi_menu"
+        />
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -40,10 +40,14 @@
         <item>닭/오리요리
 </item>
     </string-array>
-
     <string-array name="Floating_Option">
-        <item>시간대</item>
-        <item>나이</item>
-        <item>성별</item>
+        <item>시간대별</item>
+        <item>나이대별</item>
+        <item>성별별</item>
+    </string-array>
+    <string-array name="Living_Option">
+        <item>연도별</item>
+        <item>나이대별</item>
+        <item>성별별</item>
     </string-array>
 </resources>

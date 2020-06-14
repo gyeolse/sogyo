@@ -120,7 +120,7 @@ public class CommercialAnalyze_main extends AppCompatActivity implements OnMapRe
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CommercialAnalyze_main.this,CommercialAnalyze.class);
+                Intent intent = new Intent(CommercialAnalyze_main.this,CommercialAnalyze_detail.class);
                 startActivity(intent);
             }
         });

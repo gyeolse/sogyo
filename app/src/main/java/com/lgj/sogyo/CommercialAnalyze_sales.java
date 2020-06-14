@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.google.android.material.navigation.NavigationView;
@@ -48,8 +49,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Random;
 import android.graphics.Color;
-
-public class CommercialAnalyze extends AppCompatActivity {
+public class CommercialAnalyze_sales extends AppCompatActivity {
 
     NavigationView navigationView;
     DrawerLayout drawerLayout;
@@ -60,12 +60,11 @@ public class CommercialAnalyze extends AppCompatActivity {
     LineChart chart;
     LineData chartData;
     RequestQueue queue;
-    boolean mInitspinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_commercial_analyze);
+        setContentView(R.layout.activity_commercial_analyze_sales);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sogyo");
         setSupportActionBar(toolbar);
@@ -80,19 +79,19 @@ public class CommercialAnalyze extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_home:
-                        Intent intent = new Intent(CommercialAnalyze.this, MainActivity.class);
+                        Intent intent = new Intent(CommercialAnalyze_sales.this, MainActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.menu_Commercial_Analyze:
-                        intent = new Intent(CommercialAnalyze.this, CommercialAnalyze_main.class);
+                        intent = new Intent(CommercialAnalyze_sales.this, CommercialAnalyze_main.class);
                         startActivity(intent);
                         return true;
                     case R.id.menu_history:
-                        intent = new Intent(CommercialAnalyze.this, HistoryActivity.class);
+                        intent = new Intent(CommercialAnalyze_sales.this, HistoryActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.menu_judgement:
-                        intent = new Intent(CommercialAnalyze.this, judgementActivity.class);
+                        intent = new Intent(CommercialAnalyze_sales.this, judgementActivity.class);
                         startActivity(intent);
                         return true;
                 }
@@ -106,7 +105,7 @@ public class CommercialAnalyze extends AppCompatActivity {
 
 //        String url = "http://10.0.2.2:3000/CommercialAnalyze";
 
-    Button apply=(Button)findViewById(R.id.apply);
+        Button apply=(Button)findViewById(R.id.apply);
         String[]items=getResources().getStringArray(R.array.Category);
 
         listview=(ListView)findViewById(R.id.lst);
@@ -120,6 +119,7 @@ public class CommercialAnalyze extends AppCompatActivity {
 //                R.array.Category, android.R.layout.simple_spinner_item);
         Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spinner.setAdapter(Adapter);
+        final myMarkerView mv=new myMarkerView(this,R.layout.activity_my_marker_view);
         apply.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
                 System.out.println("1");
@@ -973,6 +973,9 @@ public class CommercialAnalyze extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable(){
                     @Override
                     public void run() {
+                        chartData.setDrawValues(false);
+                        chart.setMarkerView(mv);
+                        chart.setDrawMarkerViews(true);
                         chart.setBackgroundColor(Color.WHITE);
                         chart.setData(chartData);
                         chart.setDrawBorders(true);
@@ -992,7 +995,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                         legend.setTextColor(Color.RED);
                         chart.invalidate();
                     }
-                },1000);
+                },1200);
             }
         });
 

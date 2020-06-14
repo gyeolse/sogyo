@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout_drawer"
-    tools:context=".CommercialAnalyze">
+    tools:context=".CommercialAnalyze_Living">
 
 
     <!--    1. 콘텐츠 영역-->
@@ -23,7 +23,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="7dp"
             android:theme="@style/AppTheme.Appbar"
-            app:layout_constraintBottom_toTopOf="@+id/chart"
+            app:layout_constraintBottom_toTopOf="@+id/all_chart_living"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,35 +43,35 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/all_chart"
+            android:id="@+id/all_chart_living"
             android:layout_marginBottom="63dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart_floating_bytime"
+                android:id="@+id/chart_living_byyear"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-/>
+                />
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart_floating_byage"
+                android:id="@+id/chart_living_byage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart_floating_bygender"
+                android:id="@+id/chart_living_bygender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>
 
 
         <Spinner
-            android:id="@+id/spinner_floating"
+            android:id="@+id/spinner_living"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/all_chart"
-            app:layout_constraintTop_toBottomOf="@+id/all_chart" />
+            app:layout_constraintStart_toStartOf="@+id/all_chart_living"
+            app:layout_constraintTop_toBottomOf="@+id/all_chart_living" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--        AppBar도 material 라이브러리가 있어야 사용 가능하다.-->
