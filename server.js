@@ -1004,7 +1004,7 @@ app.get('/CommercialAnalyze/west' , function (req, res) {
 
 app.get('/history/location',function(req,res){
        // console.log(req.query);
-        var sql = 'select * from store limit 100';
+        var sql = 'select * from store';
         connection.query(sql,function(err,result){
                 var resultCode = 100;
                 var message = 'Error Occured!';
@@ -1076,3 +1076,27 @@ app.get('/CommercialAnalyze/bygender',function(req,res){
                 }
         })
 });
+
+app.post('/history/location/info',function(req,res){
+        console.log(req.body);
+        var longitude = req.body[0].longitude;
+        var latitude = req.body[0].latitude;
+        console.log(longitude,latitude);
+// console.log(req.query);
+// select * from store where longitude="126.6578959" and latitude = "37.4531151";
+//왜 반대로 들어가지...?
+        var sql = "select * from store where longitude=? and latitude = ?";
+        connection.query(sql,[latitude,longitude],function(err,result){
+                 var resultCode = 100;
+                 var message = 'Error Occured!'; 
+                 if(err){
+                         console.log(err);
+                 } else{                        
+                         message = 'success!';
+                         console.log('success!!!!!');
+                         console.log(result);
+                         res.json(result);
+                 }
+ 
+         });
+ });
