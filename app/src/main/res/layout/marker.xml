@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content" android:layout_height="wrap_content" >
+
     <TextView
         android:id="@+id/tv_marker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/imgbtn_blue_normal"
-        android:gravity="center"
-        android:text="1개"
-        android:textSize="16sp"/>
+        android:background="@drawable/marker_editor"
+        android:gravity="center|top"
+        android:text="1"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 </FrameLayout>

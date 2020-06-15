@@ -3,6 +3,7 @@ package com.lgj.sogyo;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -43,7 +44,7 @@ public class MarkerRenderer extends DefaultClusterRenderer<MyItem> {
     protected void onBeforeClusterItemRendered(MyItem item, MarkerOptions markerOptions) {
         super.onBeforeClusterItemRendered(item, markerOptions);
 
-        tv_marker.setText(item.cnt.substring(0,2));
+        tv_marker.setText(item.cnt.substring(0,1));
         DisplayMetrics displayMetrics = new DisplayMetrics();
         marker_root_view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         marker_root_view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
@@ -57,7 +58,6 @@ public class MarkerRenderer extends DefaultClusterRenderer<MyItem> {
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
 //        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.imgbtn_blue_normal));
     }
-
 
     @Override
     public void setOnClusterItemClickListener(ClusterManager.OnClusterItemClickListener<MyItem> listener) {
