@@ -4,8 +4,11 @@ package com.lgj.sogyo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
@@ -16,16 +19,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.navigation.NavigationView;
 import android.content.Intent;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -37,7 +44,9 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.ClusterRenderer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,9 +58,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-//////////////////////////////////////////////////20200605
-
-//마커의 갯수 카운트가 1씩 차이가 난다. 이거 해결하도록 하자. 모든 가게들이 다 그렇기 때문에, 해당 문제만 해결하면 될 것.
 
 public class HistoryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -62,6 +68,15 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
             }
         }
         return null;
+    }
+
+    //Custom Marker 구현
+    View marker_root_view;
+    TextView tv_marker;
+    // 1. setCustomMarkerView. 액티비티 초기화되는 부분에 미리 뷰 설정할 것.
+    private void setCustomMarkerView(){
+        marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker,null);
+        tv_marker = (TextView)marker_root_view.findViewById(R.id.tv_marker);
     }
 
     private FragmentManager fragmentManager;
@@ -97,12 +112,15 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
         //volley 큐 초기화
         queue = Volley.newRequestQueue(this); //큐 초기화
+
         //2 MAP FRAGMENT
         fragmentManager = getFragmentManager();
         mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.fragment_main_mv);
         mapFragment.getMapAsync(this);
+
         //3
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sogyo");
@@ -145,6 +163,9 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(final GoogleMap googleMap){
         final GoogleMap googleMap1 = googleMap;
         mClusterManager = new ClusterManager<>(this,googleMap1);
+        //Custom Marker 초기화
+        setCustomMarkerView();
+
 //1. Volley를 통해서 서버에서 받고, 위치에 따라 가게들을 묶어주는 작업 처리 과정.
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -178,6 +199,7 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                             LatLng location = LatLngMap.get(i);
                             String cnt_ = Count_list.get(i).toString()+"개의 점포";
                             MyItem offsetItem = new MyItem(location,cnt_);
+                            //수정. 06/16
                             mClusterManager.addItem(offsetItem);
 //                            MarkerOptions markerOptions = new MarkerOptions().position(location).title(cnt_);
 //                            googleMap1.addMarker(markerOptions);
@@ -200,10 +222,13 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
         //BASE LOCATION 세팅
         LatLng base_location = new LatLng(37.451095, 126.656996);
         googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(base_location, 15));
+
         //Clustering 세팅
         googleMap1.setOnCameraIdleListener(mClusterManager);
         googleMap1.setOnMarkerClickListener(mClusterManager);
 
+        //Custom Marker 세팅하는 과정.
+        mClusterManager.setRenderer(new MarkerRenderer(getApplicationContext(),googleMap1,mClusterManager));
         mClusterManager.setOnClusterItemClickListener(
                 new ClusterManager.OnClusterItemClickListener<MyItem>() {
                     @Override
@@ -224,4 +249,19 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
 
 
     } //ONMAPREADY 종료 시점.
+
+    private Bitmap createDrawbleFromView(Context context, View view) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        return bitmap;
+    }
 } //HISTORY ACTIVITY 종료 시점
