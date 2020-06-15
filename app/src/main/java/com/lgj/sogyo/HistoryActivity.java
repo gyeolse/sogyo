@@ -246,8 +246,6 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                 }
         );
 
-
-
     } //ONMAPREADY 종료 시점.
 
 } //HISTORY ACTIVITY 종료 시점

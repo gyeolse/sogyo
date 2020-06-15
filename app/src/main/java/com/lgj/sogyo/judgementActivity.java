@@ -2,44 +2,33 @@ package com.lgj.sogyo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.JsonObject;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.textclassifier.TextLinks;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class judgementActivity extends AppCompatActivity {
 
@@ -119,7 +108,7 @@ public class judgementActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//Volley Network
                 JSONArray array = new JSONArray(); //1
                 JSONObject requestJsonObject = new JSONObject(); //2
                 try {
@@ -160,6 +149,13 @@ public class judgementActivity extends AppCompatActivity {
 
 //               Intent intent= new Intent(getApplicationContext(),Judgement_Result.class);
 //                startActivity(intent);
+//Fragement 띄우기 구현
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                JudgeFragment judgeFragment = new JudgeFragment();
+                transaction.replace(R.id.frame,judgeFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                btn.setVisibility(View.INVISIBLE);
             }
         });
 
