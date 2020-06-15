@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var express = require('express');
 var bodyParser = require('body-parser');
+const { response } = require('express');
 var app = express();
 //var config = require('./config.json');
 app.use(bodyParser.json());
@@ -14,8 +15,8 @@ var connection = mysql.createConnection({
         host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
         user:'root',
         database: 'biz',
-        port:3306,
-        password:'12341234'
+        password: '12341234',
+        port:3306
 });
 
 //전역변수
@@ -719,19 +720,7 @@ app.get('/CommercialAnalyze',function(req,res){
         })
 });
 
-app.get('/analysis/details',function(req,res){
-        var sql="";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-});
+
 
 var ctgpath=['cafe','fastfood','korean','noodle','chicken','gobchang','ramen','china','thai','bakery','dosirak','west','drink','pizza','waterrice','japan','jokbal','icecream','ddeok','galbi','duck'];
 var ctglist=['커피전문점/카페/다방','패스트푸드','한식/백반/한정식','국수/만두/칼국수','후라이드/양념치킨','곱창/양구이전문','라면김밥분식','중국음식/중국집','동남아음식','제과점','도시락전문점','양식','유흥주점','피자전문','죽전문점','일식/수산물','족발/보쌈전문','아이스크림판매','떡볶이전문','갈비/삼겹살','닭/오리요리'];
@@ -1022,19 +1011,31 @@ app.get('/history/location',function(req,res){
         })
 });
 
-app.get('/judgement',function(req,res){
-        var sql="";
-        connection.query(sql,function(err,result){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        console.log(result);
-                        res.json(result);
-                        console.log('success!!!!!');
-                }
-        })
-});
+app.post('/history/location/info',function(req,res){
+        console.log(req.body);
+        var longitude = req.body[0].longitude;
+        var latitude = req.body[0].latitude;
+        console.log(longitude,latitude);
+// console.log(req.query);
+// select * from store where longitude="126.6578959" and latitude = "37.4531151";
+//왜 반대로 들어가지...?
+        var sql = "select * from store where longitude=? and latitude = ?";
+        connection.query(sql,[latitude,longitude],function(err,result){
+                 var resultCode = 100;
+                 var message = 'Error Occured!'; 
+                 if(err){
+                         console.log(err);
+                 } else{                        
+                         message = 'success!';
+                         console.log('success!!!!!');
+                         console.log(result);
+                         res.json(result);
+                 }
+ 
+         });
+ });
+
+
 app.get('/CommercialAnalyze/bytime',function(req,res){
         var sql="select time,sum(population) as pop from Floating_people group by time;";
         connection.query(sql,function(err,result){
@@ -1077,26 +1078,220 @@ app.get('/CommercialAnalyze/bygender',function(req,res){
         })
 });
 
-app.post('/history/location/info',function(req,res){
-        console.log(req.body);
-        var longitude = req.body[0].longitude;
-        var latitude = req.body[0].latitude;
-        console.log(longitude,latitude);
-// console.log(req.query);
-// select * from store where longitude="126.6578959" and latitude = "37.4531151";
-//왜 반대로 들어가지...?
-        var sql = "select * from store where longitude=? and latitude = ?";
-        connection.query(sql,[latitude,longitude],function(err,result){
-                 var resultCode = 100;
-                 var message = 'Error Occured!'; 
-                 if(err){
-                         console.log(err);
-                 } else{                        
-                         message = 'success!';
-                         console.log('success!!!!!');
-                         console.log(result);
-                         res.json(result);
-                 }
- 
-         });
- });
+//추가
+var ctg;
+var cost;
+var judge_score;
+app.post('/judgement',async(req,res)=>{ 
+//        console.log(req.body);
+        ctg=req.body[0].category;
+        cost=req.body[0].cost;
+        console.log(ctg);
+        // for(var i=0;i<category_score.length;i++){
+        //         console.log(category_score[i]);
+        // }
+       if (ctg=="커피전문점/카페/다방"){
+                await preference("커피전문점/카페/다방");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[0]);
+                judge_score=prefer_score+category_score[0];
+                console.log(judge_score);
+                res.json(judge_score);
+
+       }
+       else if(ctg=="패스트푸드"){
+                await preference("패스트푸드");
+                //하위분류점수+선호도 점수 합산값
+                 //1~3:0.1~2.1->1.1~5.1
+                 console.log(prefer_score);
+                 judge_score=prefer_score+category_score[1];
+                 console.log(judge_score);
+       }
+       else if(ctg=="한식/백반/한정식"){
+        await preference("한식/백반/한정식");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[2]);
+                judge_score=prefer_score+category_score[2];
+                console.log(judge_score);
+       }
+       else if(ctg=="국수/만두/칼국수"){
+        await preference("국수/만두/칼국수");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[3]);
+                judge_score=prefer_score+category_score[3];
+                console.log(judge_score);
+        }
+        else if(ctg=="후라이드/양념치킨"){
+                await preference("후라이드/양념치킨");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[4]);
+                judge_score=prefer_score+category_score[4];
+                console.log(judge_score);
+        }
+        else if(ctg=="곱창/양구이전문"){
+
+                await preference("곱창/양구이전문");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[5]);
+                judge_score=prefer_score+category_score[5];
+                console.log(judge_score);
+        }
+        else if(ctg=="라면김밥분식"){
+                await preference("라면김밥분식");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[6]);
+                judge_score=prefer_score+category_score[6];
+                console.log(judge_score);
+        }
+        else if(ctg=="중국음식/중국집"){
+              
+                await preference("중국음식/중국집");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[7]);
+                judge_score=prefer_score+category_score[7];
+                console.log(judge_score);
+        }
+        else if(ctg=="동남아음식"){
+            
+                await preference("동남아음식");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[8]);
+                judge_score=prefer_score+category_score[8];
+                console.log(judge_score);
+        }
+        else if(ctg=="제과점"){
+              
+                await preference("제과점");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[9]);
+                judge_score=prefer_score+category_score[9];
+                console.log(judge_score);
+        }
+        else if(ctg=="도시락전문"){
+               
+                await preference("도시락전문");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[10]);
+                judge_score=prefer_score+category_score[10];
+                console.log(judge_score);
+        }
+        else if(ctg=="양식"){
+                await  preference("양식");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[11]);
+                judge_score=prefer_score+category_score[11];
+                console.log(judge_score);
+        }
+        else if(ctg=="유흥주점"){
+                await preference("유흥주점");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[12]);
+                judge_score=prefer_score+category_score[12];
+                console.log(judge_score);
+        }
+        else if(ctg=="피자전문"){
+                await preference("피자전문");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[13]);
+                judge_score=prefer_score+category_score[13];
+                console.log(judge_score);
+        }
+        else if(ctg=="죽전문점"){
+                await preference("죽전문점");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[14]);
+                judge_score=prefer_score+category_score[14];
+                console.log(judge_score);
+        }
+        else if(ctg=="일식/수산물"){
+               
+                await preference("일식/수산물");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[15]);
+                judge_score=prefer_score+category_score[15];
+                console.log(judge_score);
+        }
+        else if(ctg=="족발/보쌈전문"){
+               
+                await preference("족발/보쌈전문");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[16]);
+                judge_score=prefer_score+category_score[16];
+                console.log(judge_score);
+        }
+        else if(ctg=="아이스크림판매"){
+              
+                await  preference("아이스크림판매");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[17]);
+                judge_score=prefer_score+category_score[17];
+                console.log(judge_score);
+        }
+        else if(ctg=="떡볶이전문"){
+              
+                await  preference("떡볶이전문");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[18]);
+                judge_score=prefer_score+category_score[18];
+                console.log(judge_score);
+        }
+        else if(ctg=="갈비/삼겹살"){
+                await  preference("갈비/삼겹살");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[19]);
+                judge_score=prefer_score+category_score[19];
+                console.log(judge_score);
+        }
+        else if(ctg=="닭/오리요리"){
+                await  preference("닭/오리요리");
+                //하위분류점수+선호도 점수 합산값
+                console.log(prefer_score+","+category_score[20]);
+                judge_score=prefer_score+category_score[20];
+                console.log(judge_score);
+        }
+});
+
+//이미 개점된 fran은 o 출력 배열을 만들어야하나싶다
+app.get('/judgement/result',function(req,res){
+        var sql_result="select lowerCategory,fran_name,total_money from francise where lowerCategory="+ctg+" and total_money<"+cost;
+        connection.query(sql_result,function(err,rows){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        // for(var i=0;i<rows.length;i++){
+                        //         if(rows[i].fran_name==""){
+                                        
+                        //         }
+                        // }
+                        console.log("판단점수 : "+judge_score);
+                        res.json(judge_score,rows);
+                        console.log('success!!!!!');
+                }
+        })
+})
+
+var prefer_score;
+function preference(pctg){
+        //선호도 점수->등수에 따라 점수
+        return new Promise(function(resolve,reject){
+        var ranking;
+        var sql_v="SELECT RANK() OVER (ORDER BY votecnt DESC) as ranking, category,votecnt FROM vote";
+        connection.query(sql_v,function(err,rows){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        for(var i=0;i<rows.length;i++){
+                                if(rows[i].category==pctg){
+                                     ranking=rows[i].ranking;
+                                     break;   
+                                }
+                        }
+                        //랭킹이 높을 때 선호도 점수를 어떻게 주냐
+                        prefer_score=(1/ranking)*2.1;
+                        resolve();
+                }
+        });
+});  
+}
