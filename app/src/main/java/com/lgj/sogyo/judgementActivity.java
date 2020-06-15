@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import android.content.Intent;
@@ -109,7 +110,6 @@ public class judgementActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //Volley Network
-                JSONArray array = new JSONArray(); //1
                 JSONObject requestJsonObject = new JSONObject(); //2
                 try {
                     //System.out.println("서버 넣기 전");
@@ -117,38 +117,31 @@ public class judgementActivity extends AppCompatActivity {
                     if(checkBox.isChecked()){
                         requestJsonObject.put("cost",editText.getText().toString() );
                     }
-                    array.put(requestJsonObject);
                     System.out.println("객체 확인"+requestJsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
                 final RequestQueue requestqueue = Volley.newRequestQueue(judgementActivity.this);
-                final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, array, new Response.Listener<JSONArray>() {
+                final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestJsonObject, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        //핸들러 입력
+                    public void onResponse(JSONObject response) {
                         try {
                             System.out.println("성공");
-                            JSONObject jsonObject = response.getJSONObject(0);
-                            System.out.println(jsonObject);
-                            //System.out.println(response.length());
-
-                        } catch(JSONException e) {
-                            e.printStackTrace();
+                            Double a = response.getDouble("judge_score");
+                            System.out.println(a);
                         }
-                    }
+                        catch(JSONException e){
+                            e.printStackTrace(); } }
                 }, new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                });
-                requestqueue.add(jsonArrayRequest);
+                    public void onErrorResponse(VolleyError error) { } });
+
+                requestqueue.add(jsonObjectRequest);
 
 //               Intent intent= new Intent(getApplicationContext(),Judgement_Result.class);
 //                startActivity(intent);
+
 //Fragement 띄우기 구현
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 JudgeFragment judgeFragment = new JudgeFragment();

@@ -1083,9 +1083,9 @@ var ctg;
 var cost;
 var judge_score;
 app.post('/judgement',async(req,res)=>{ 
-//        console.log(req.body);
-        ctg=req.body[0].category;
-        cost=req.body[0].cost;
+        console.log(req.body);
+        ctg=req.body.category;
+        cost=req.body.cost;
         console.log(ctg);
         // for(var i=0;i<category_score.length;i++){
         //         console.log(category_score[i]);
@@ -1096,8 +1096,10 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[0]);
                 judge_score=prefer_score+category_score[0];
                 console.log(judge_score);
-                res.json(judge_score);
 
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
        }
        else if(ctg=="패스트푸드"){
                 await preference("패스트푸드");
@@ -1105,7 +1107,12 @@ app.post('/judgement',async(req,res)=>{
                  //1~3:0.1~2.1->1.1~5.1
                  console.log(prefer_score);
                  judge_score=prefer_score+category_score[1];
-                 console.log(judge_score);
+                 console.log(judge_score); 
+
+                 var jsonstr={"judge_score":judge_score};
+                 console.log(jsonstr);
+                 res.json(jsonstr);
+ 
        }
        else if(ctg=="한식/백반/한정식"){
         await preference("한식/백반/한정식");
@@ -1113,6 +1120,12 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[2]);
                 judge_score=prefer_score+category_score[2];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
+
        }
        else if(ctg=="국수/만두/칼국수"){
         await preference("국수/만두/칼국수");
@@ -1120,6 +1133,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[3]);
                 judge_score=prefer_score+category_score[3];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="후라이드/양념치킨"){
                 await preference("후라이드/양념치킨");
@@ -1127,6 +1145,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[4]);
                 judge_score=prefer_score+category_score[4];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="곱창/양구이전문"){
 
@@ -1135,6 +1158,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[5]);
                 judge_score=prefer_score+category_score[5];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="라면김밥분식"){
                 await preference("라면김밥분식");
@@ -1142,6 +1170,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[6]);
                 judge_score=prefer_score+category_score[6];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="중국음식/중국집"){
               
@@ -1150,6 +1183,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[7]);
                 judge_score=prefer_score+category_score[7];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="동남아음식"){
             
@@ -1158,6 +1196,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[8]);
                 judge_score=prefer_score+category_score[8];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="제과점"){
               
@@ -1166,6 +1209,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[9]);
                 judge_score=prefer_score+category_score[9];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="도시락전문"){
                
@@ -1174,6 +1222,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[10]);
                 judge_score=prefer_score+category_score[10];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="양식"){
                 await  preference("양식");
@@ -1181,6 +1234,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[11]);
                 judge_score=prefer_score+category_score[11];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="유흥주점"){
                 await preference("유흥주점");
@@ -1188,6 +1246,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[12]);
                 judge_score=prefer_score+category_score[12];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="피자전문"){
                 await preference("피자전문");
@@ -1195,6 +1258,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[13]);
                 judge_score=prefer_score+category_score[13];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="죽전문점"){
                 await preference("죽전문점");
@@ -1202,6 +1270,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[14]);
                 judge_score=prefer_score+category_score[14];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="일식/수산물"){
                
@@ -1210,6 +1283,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[15]);
                 judge_score=prefer_score+category_score[15];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="족발/보쌈전문"){
                
@@ -1218,6 +1296,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[16]);
                 judge_score=prefer_score+category_score[16];
                 console.log(judge_score);
+                
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="아이스크림판매"){
               
@@ -1226,6 +1309,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[17]);
                 judge_score=prefer_score+category_score[17];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="떡볶이전문"){
               
@@ -1234,6 +1322,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[18]);
                 judge_score=prefer_score+category_score[18];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="갈비/삼겹살"){
                 await  preference("갈비/삼겹살");
@@ -1241,6 +1334,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[19]);
                 judge_score=prefer_score+category_score[19];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
         else if(ctg=="닭/오리요리"){
                 await  preference("닭/오리요리");
@@ -1248,6 +1346,11 @@ app.post('/judgement',async(req,res)=>{
                 console.log(prefer_score+","+category_score[20]);
                 judge_score=prefer_score+category_score[20];
                 console.log(judge_score);
+
+                var jsonstr={"judge_score":judge_score};
+                console.log(jsonstr);
+                res.json(jsonstr);
+
         }
 });
 
