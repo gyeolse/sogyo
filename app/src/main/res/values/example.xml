@@ -50,4 +50,8 @@
         <item>나이대별</item>
         <item>성별별</item>
     </string-array>
+    <string-array name="Vote_Option">
+        <item>프랜차이즈 투표</item>
+        <item>업종 투표</item>
+    </string-array>
 </resources>
