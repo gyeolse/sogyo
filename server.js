@@ -1063,7 +1063,21 @@ app.get('/CommercialAnalyze/byage',function(req,res){
                 }
         })
 });
+app.post('/CommercialAnalyze/total',function(req,res){
 
+var sql_test=req.body[0].Q;
+console.log(sql_test);
+connection.query(sql_test,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        });
+});
 app.get('/CommercialAnalyze/bygender',function(req,res){
         var sql="select gender,sum(population) as pop from Floating_people group by gender;";
         connection.query(sql,function(err,result){
