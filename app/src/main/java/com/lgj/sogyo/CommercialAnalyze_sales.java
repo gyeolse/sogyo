@@ -65,7 +65,7 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
     LineData chartData;
     RequestQueue queue;
     String[] lb = new String[]{"커피전문점/카페/다방", "패스트푸드", "한식/백반/한정식", "국수/만두/칼국수", "후라이드/양념치킨", "곱창/양구이전문",
-            "라면김밥분식", "중국음식/중국집", "동남아음식", "제과점", "양식", "유흥주점", "피자전문", "죽전문점", "일식수산물", "족발/보쌈전문", "아이스크림판매",
+            "라면김밥분식", "중국음식/중국집", "동남아음식", "제과점", "도시락전문","양식", "유흥주점", "피자전문", "죽전문점", "일식수산물", "족발/보쌈전문", "아이스크림판매",
             "떡볶이전문", "갈비/삼겹살", "닭/오리요리"};
     ArrayList<Integer>num;
     @Override
@@ -170,8 +170,9 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
                     }
                     JSONArray j = new JSONArray();
                     j.put(requestJsonObject);
+                    System.out.println("1");
                     String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/total";
-
+                    System.out.println(url);
                     final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                             Request.Method.POST, url, j, new Response.Listener<JSONArray>() {
                         @Override
