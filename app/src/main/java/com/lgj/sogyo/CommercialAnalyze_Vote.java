@@ -121,7 +121,7 @@ public class CommercialAnalyze_Vote extends AppCompatActivity {
 
                 if(position==0){
 
-                    String url="http://10.0.2.2:3000/CommercialAnalyze/vote/byFrancise";
+                    String url="http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/vote/byFrancise";
                     final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
                             Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
                         @Override
@@ -178,7 +178,7 @@ public class CommercialAnalyze_Vote extends AppCompatActivity {
                 }
                 if(position==1){
 
-                    String url="http://10.0.2.2:3000/CommercialAnalyze/vote/byCategory";
+                    String url="http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/vote/byCategory";
                     final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
                             Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
                         @Override

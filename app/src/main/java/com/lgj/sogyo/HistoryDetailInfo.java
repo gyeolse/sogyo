@@ -36,7 +36,7 @@ import java.util.Map;
 
 public class HistoryDetailInfo extends Activity {
     private RequestQueue queue; //volley가 queue에 response 넣기
-    public String url = "http://10.0.2.2:3000/history/location/info"; //보낼 URL.
+    public String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/history/location/info"; //보낼 URL.
     // RecyclerView
     public ArrayList<Store> storeArrayList = new ArrayList<>();
     @Override

@@ -55,7 +55,7 @@ public class CommercialAnalyze_main extends AppCompatActivity implements OnMapRe
     //For Volley
     private static final String TAG = "MAIN";
     private RequestQueue queue; //volley가 queue에 response 넣기
-    public String url = "http://10.0.2.2:3000/CommercialAnalyze_main"; //보낼 URL. 임의로 생성
+    public String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze_main"; //보낼 URL. 임의로 생성
     private TextView tv;
 
     @Override

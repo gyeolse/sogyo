@@ -78,7 +78,7 @@ protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_volley_example);
     tv = findViewById(R.id.tvMain);
     queue = Volley.newRequestQueue(this);
-    String url="http://10.0.2.2:3000/judgement";
+    String url="http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/judgement";
 
     StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
         @Override

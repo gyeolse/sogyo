@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class judgeResult extends AppCompatActivity {
 
     private RequestQueue queue; //volley가 queue에 response 넣기
-    public String url = "http://10.0.2.2:3000/judgement/result"; //보낼 URL.
+    public String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/judgement/result"; //보낼 URL.
     //Intent
     public boolean isCorrect; //적합_부적합 판정
     public double judge_score;

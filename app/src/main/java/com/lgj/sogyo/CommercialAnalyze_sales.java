@@ -170,7 +170,7 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
                     }
                     JSONArray j = new JSONArray();
                     j.put(requestJsonObject);
-                    String url = "http://10.0.2.2:3000/CommercialAnalyze/total";
+                    String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/total";
 
                     final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                             Request.Method.POST, url, j, new Response.Listener<JSONArray>() {

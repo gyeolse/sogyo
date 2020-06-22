@@ -130,7 +130,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                 for(int i = count-1;i>=0;i--){
                     if(checkedItems.get(i)){
                         if(i==0){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/cafe";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/cafe";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -168,7 +168,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==1){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/fastfood";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/fastfood";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -208,7 +208,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==2){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/korean";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/korean";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -248,7 +248,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==3){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/noodle";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/noodle";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -288,7 +288,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==4){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/chicken";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/chicken";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -328,7 +328,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==5){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/gobchang";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/gobchang";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -368,7 +368,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==6){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/ramen";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/ramen";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -408,7 +408,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==7){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/china";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/china";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -448,7 +448,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==8){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/thai";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/thai";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -488,7 +488,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==9){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/bakery";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/bakery";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -528,7 +528,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==10){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/dosirak";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/dosirak";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -568,7 +568,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==11){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/west";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/west";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -608,7 +608,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==12){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/drink";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/drink";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -648,7 +648,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==13){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/pizza";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/pizza";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -688,7 +688,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==14){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/waterrice";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/waterrice";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -728,7 +728,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==15){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/japan";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/japan";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -768,7 +768,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==16){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/jokbal";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/jokbal";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -808,7 +808,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==17){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/icecream";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/icecream";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -848,7 +848,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==18){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/ddeok";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/ddeok";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -888,7 +888,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==19){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/galbi";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/galbi";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override
@@ -928,7 +928,7 @@ public class CommercialAnalyze extends AppCompatActivity {
                             queue.add(jsonArrayRequest);
                         }
                         if(i==20){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/duck";
+                            String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/duck";
                             final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                                     Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                                 @Override

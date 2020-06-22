@@ -116,7 +116,7 @@ public class CommercialAnalyze_Living extends AppCompatActivity {
 
                 if(position==0){
 
-                    String url="http://10.0.2.2:3000/CommercialAnalyze/living/byyear";
+                    String url="http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/living/byyear";
                     final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
                             Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
                         @Override
@@ -192,7 +192,7 @@ public class CommercialAnalyze_Living extends AppCompatActivity {
                     queue.add(jsonArrayRequest);
                 }
                 if(position==1){
-                    String url="http://10.0.2.2:3000/CommercialAnalyze/living/byage";
+                    String url="http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/living/byage";
                     final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
                             Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
                         @Override
@@ -269,7 +269,7 @@ public class CommercialAnalyze_Living extends AppCompatActivity {
                     queue.add(jsonArrayRequest);
                 }
                 if(position==2){
-                    String url="http://10.0.2.2:3000/CommercialAnalyze/living/bygender";
+                    String url="http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/living/bygender";
                     final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
                             Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
                         @Override
