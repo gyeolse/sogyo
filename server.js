@@ -1438,3 +1438,42 @@ app.get('/CommercialAnalyze/living/bygender',function(req,res){
                 }
         })
 });
+app.get('/CommercialAnalyze/vote/byCategory',function(req,res){
+        var sql="SELECT RANK() OVER (ORDER BY votecnt DESC) as ranking, category,votecnt FROM vote";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+app.get('/CommercialAnalyze/vote/byCategory',function(req,res){
+        var sql="SELECT RANK() OVER (ORDER BY votecnt DESC) as ranking, category,votecnt FROM vote";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});
+app.get('/CommercialAnalyze/vote/byFrancise',function(req,res){
+        var sql="SELECT RANK() OVER (ORDER BY votecnt DESC) as ranking, value,votecnt FROM francisevote";
+        connection.query(sql,function(err,result){
+                if(err){
+                        console.log(err);
+                }
+                else{
+                        console.log(result);
+                        res.json(result);
+                        console.log('success!!!!!');
+                }
+        })
+});

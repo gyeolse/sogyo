@@ -63,6 +63,7 @@ public class CommercialAnalyze_detail extends AppCompatActivity {
         Button button_floating = (Button) findViewById(R.id.button_floating);
         Button button_sales = (Button) findViewById(R.id.button_sales);
         Button button_living = (Button) findViewById(R.id.button_living);
+        Button button_vote = (Button) findViewById(R.id.button_vote);
         button_floating.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -84,6 +85,14 @@ public class CommercialAnalyze_detail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CommercialAnalyze_detail.this, CommercialAnalyze_Living.class);
+                startActivity(intent);
+            }
+        });
+        button_vote.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CommercialAnalyze_detail.this, CommercialAnalyze_Vote.class);
                 startActivity(intent);
             }
         });
