@@ -44,7 +44,15 @@ public class MarkerRenderer extends DefaultClusterRenderer<MyItem> {
     protected void onBeforeClusterItemRendered(MyItem item, MarkerOptions markerOptions) {
         super.onBeforeClusterItemRendered(item, markerOptions);
 
-        tv_marker.setText(item.cnt.substring(0,1));
+        System.out.println(item.cnt.length());
+
+        if(item.cnt.length()==7){
+            tv_marker.setText(item.cnt.substring(0,2));
+        }
+        else{
+            tv_marker.setText(item.cnt.substring(0,1));
+        }
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         marker_root_view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         marker_root_view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);

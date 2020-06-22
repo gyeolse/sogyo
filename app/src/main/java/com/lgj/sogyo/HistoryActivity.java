@@ -198,6 +198,7 @@ public class HistoryActivity extends AppCompatActivity implements OnMapReadyCall
                         if(Count_list.get(i)!=0){
                             LatLng location = LatLngMap.get(i);
                             String cnt_ = Count_list.get(i).toString()+"개의 점포";
+//                            String cnt_item = Count_list.get(i).toString();
                             MyItem offsetItem = new MyItem(location,cnt_);
                             //수정. 06/16
                             mClusterManager.addItem(offsetItem);
