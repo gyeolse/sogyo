@@ -6,12 +6,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,9 +25,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.fragment.app.FragmentTransaction;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +43,8 @@ public class judgementActivity extends AppCompatActivity {
     RequestQueue queue;
     String selectedspinner;
     String url = "http://10.0.2.2:3000/judgement";
-
+    Bundle bundle = new Bundle(); //fragment 전송시켜줄 객체 선언
+    Double judge_score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +129,7 @@ public class judgementActivity extends AppCompatActivity {
                         try {
                             System.out.println("성공");
                             Double a = response.getDouble("judge_score");
+                            judge_score = a;
                             System.out.println(a);
                         }
                         catch(JSONException e){
@@ -143,12 +144,38 @@ public class judgementActivity extends AppCompatActivity {
 //                startActivity(intent);
 
 //Fragement 띄우기 구현
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                JudgeFragment judgeFragment = new JudgeFragment();
-                transaction.replace(R.id.frame,judgeFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-                btn.setVisibility(View.INVISIBLE);
+
+                Handler mHandler = new Handler();
+                Runnable mMyTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        // 실제 동작
+                        //                    bundle.putString("category",selectedspinner); //프래그먼트에 보낼 데이터
+                        //                    bundle.putString("cost",editText.getText().toString()); //프래그먼트에 보낼 데이터
+                        //                    bundle.putBoolean("checkBox",checkBox.isChecked());
+                        Intent myIntent = new Intent(judgementActivity.this, judgeResult.class);
+                        boolean a = checkBox.isChecked();
+                        String b = editText.getText().toString();
+                        String c = selectedspinner;
+                        myIntent.putExtra("checkBox",a);
+                        myIntent.putExtra("cost",b);
+                        myIntent.putExtra("category",c);
+                        myIntent.putExtra("judge_score",judge_score);
+                        startActivity(myIntent);
+
+//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                        JudgeFragment judgeFragment = new JudgeFragment();
+//                        judgeFragment.setArguments(bundle); //보낼 데이터 지정
+
+                        //로딩화면 표시
+//                        transaction.replace(R.id.frame,judgeFragment);
+//                        transaction.addToBackStack(null);
+//                        transaction.commit();
+//                        btn.setVisibility(View.INVISIBLE);
+                    }
+                };
+                mHandler.postDelayed(mMyTask, 1500); // 1.5초후에 실행
+
             }
         });
 

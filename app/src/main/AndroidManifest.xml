@@ -11,12 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CommercialAnalyze_Vote" />
+        <activity android:name=".CommercialAnalyze_Vote"></activity>
         <activity android:name=".CommercialAnalyze_Living" />
         <activity android:name=".myMarkerView" />
         <activity android:name=".CommercialAnalyze_sales" />
         <activity android:name=".CommercialAnalyze_detail" />
         <activity android:name=".CommercialAnalyze_Floating" />
+        <activity android:name=".judgeResult"/>
         <activity
             android:name=".HistoryDetailInfo"
             android:theme="@android:style/Theme.Dialog" />

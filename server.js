@@ -1369,23 +1369,52 @@ app.post('/judgement',async(req,res)=>{
 });
 
 //이미 개점된 fran은 o 출력 배열을 만들어야하나싶다
-app.get('/judgement/result',function(req,res){
-        var sql_result="select lowerCategory,fran_name,total_money from francise where lowerCategory="+ctg+" and total_money<"+cost;
-        connection.query(sql_result,function(err,rows){
-                if(err){
-                        console.log(err);
-                }
-                else{
-                        // for(var i=0;i<rows.length;i++){
-                        //         if(rows[i].fran_name==""){
-                                        
-                        //         }
-                        // }
-                        console.log("판단점수 : "+judge_score);
-                        res.json(judge_score,rows);
-                        console.log('success!!!!!');
-                }
-        })
+app.post('/judgement/result',function(req,res){
+        console.log(req.body);
+        var lowerCategory = req.body[0].category;
+        var total_money = req.body[0].cost;
+//        console.log(category,cost);
+        if(cost!=null){
+                var sql_result="select * from francise where lowerCategory=? and total_money < ?";
+                connection.query(sql_result,[lowerCategory,total_money],function(err,result){
+                        if(err){
+                                console.log(err);
+                        }
+                        else{
+                                // for(var i=0;i<rows.length;i++){
+                                //         if(rows[i].fran_name==""){
+                                                
+                                //         }
+                                // }
+                                console.log("판단점수 : "+judge_score);
+                                console.log(result);
+                                res.json(result);
+        //                        res.json(judge_score,rows);
+        //                        console.log('success!!!!!');
+                        }
+                })
+        }
+        else{
+                var sql_result="select * from francise where lowerCategory=?";
+                connection.query(sql_result,[lowerCategory],function(err,result){
+                        if(err){
+                                console.log(err);
+                        }
+                        else{
+                                // for(var i=0;i<rows.length;i++){
+                                //         if(rows[i].fran_name==""){
+                                                
+                                //         }
+                                // }
+                                console.log("판단점수 : "+judge_score);
+                                console.log(result);
+                                res.json(result);
+        //                        res.json(judge_score,rows);
+        //                        console.log('success!!!!!');
+                        }
+                })
+        }
+        
 })
 
 var prefer_score;
