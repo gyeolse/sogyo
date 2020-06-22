@@ -153,7 +153,7 @@ public class CommercialAnalyze_Vote extends AppCompatActivity {
                                 PieDataSet dataSet = new PieDataSet(arr,"francise");
                                 dataSet.setSliceSpace(3f);
                                 dataSet.setSelectionShift(5f);
-                                dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+                                dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                                 dataSet.setValueTextColor(Color.BLACK);
                                 System.out.println("2");
                                 PieData data = new PieData((dataSet));
@@ -176,83 +176,63 @@ public class CommercialAnalyze_Vote extends AppCompatActivity {
                     );
                     queue.add(jsonArrayRequest);
                 }
-//                if(position==1){
-//                    String url="http://10.0.2.2:3000/CommercialAnalyze/living/byage";
-//                    final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
-//                            Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
-//                        @Override
-//                        public void onResponse(JSONArray response) {
-//                            try {
-//
-//                                List<BarEntry> arr[]=new ArrayList[5];
-//                                String Label="나이대별 상주인구";
-//                                BarChart chart = (BarChart)findViewById(R.id.chart_living_byage);
-//                                for(int i=0;i<response.length();i++){
-//                                    arr[i]=new ArrayList<>();
-//                                    JSONObject jsonObject = response.getJSONObject(i);
-//                                    int population = jsonObject.getInt("pop");
-//                                    arr[i].add(new BarEntry(Float.valueOf(i),Float.valueOf(population)));
-//                                }
-//                                chart.setVisibility(View.VISIBLE);
-//                                BarDataSet ten =new BarDataSet(arr[0],"20대 미만");
-//                                ten.setValueTextSize(10);
-//                                BarDataSet twenty =new BarDataSet(arr[1],"20대");
-//                                twenty.setValueTextSize(10);
-//                                BarDataSet thirty =new BarDataSet(arr[2],"30대");
-//                                thirty.setValueTextSize(10);
-//                                BarDataSet fourty =new BarDataSet(arr[3],"40대");
-//                                fourty.setValueTextSize(10);
-//                                BarDataSet fifty =new BarDataSet(arr[4],"50대 이상");
-//                                fifty.setValueTextSize(10);
-//                                ten.setColor(Color.RED);
-//                                twenty.setColor(Color.GREEN);
-//                                thirty.setColor(Color.GRAY);
-//                                fourty.setColor(Color.BLACK);
-//                                fifty.setColor(Color.BLUE);
-//                                BarData chartData=new BarData();
-//                                chartData.addDataSet(ten);
-//                                chartData.addDataSet(twenty);
-//                                chartData.addDataSet(thirty);
-//                                chartData.addDataSet(fourty);
-//                                chartData.addDataSet(fifty);
-//                                chartData.setBarWidth(0.9f);
-//                                chart.setBackgroundColor(Color.WHITE);
-//
-//
-//                                chartData.setHighlightEnabled(true);
-////                                chartData.setDrawValues(false);
-//                                chart.setData(chartData);
-//                                chart.setDrawBorders(true);
-//                                chart.setBorderWidth(2);
-//                                chart.setFitBars(true);
-//                                XAxis xAxis=chart.getXAxis();
-//                                xAxis.setDrawLabels(false);
-//
-//                                YAxis yLAxis=chart.getAxisLeft();
-//                                yLAxis.setAxisMinimum(0);
-//                                yLAxis.setLabelCount(5);
-//                                YAxis yRAxis=chart.getAxisRight() ;
-//                                yRAxis.setAxisMinimum(0);
-//                                yRAxis.setLabelCount(5);
-//
-//
-//                                Legend legend = chart.getLegend();
-//                                legend.setEnabled(true);
-//
-//                                chart.invalidate();
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }, new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                        }
-//
-//                    }
-//                    );
-//                    queue.add(jsonArrayRequest);
-//                }
+                if(position==1){
+
+                    String url="http://10.0.2.2:3000/CommercialAnalyze/vote/byCategory";
+                    final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
+                            Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try {
+                                ArrayList<PieEntry>arr=new ArrayList<>();
+                                String Label="업종 투표";
+                                PieChart franChart = (PieChart)findViewById(R.id.categoryVote);
+                                franChart.setVisibility(View.VISIBLE);
+                                int etc=0;
+                                for(int i=0;i<response.length();i++){
+                                    JSONObject jsonObject = response.getJSONObject(i);
+                                    int votecnt = jsonObject.getInt("votecnt");
+                                    if(i>=4){
+                                        etc+=votecnt;
+                                        continue;
+                                    }
+                                    String Category = jsonObject.getString("category");
+                                    arr.add(new PieEntry(votecnt,Category));
+                                }
+                                arr.add(new PieEntry(etc,"기타"));
+                                franChart.setUsePercentValues(true);
+                                franChart.getDescription().setEnabled(false);
+                                franChart.setExtraOffsets(5,10,5,5);
+                                franChart.setDragDecelerationFrictionCoef(0.95f);
+                                franChart.setDrawHoleEnabled(false);
+                                franChart.setTransparentCircleRadius(61f);
+                                franChart.animateY(1000, Easing.EaseInOutCubic);
+                                PieDataSet dataSet = new PieDataSet(arr,"Category");
+                                dataSet.setSliceSpace(3f);
+                                dataSet.setSelectionShift(5f);
+                                dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                                dataSet.setValueTextColor(Color.BLACK);
+                                System.out.println("2");
+                                PieData data = new PieData((dataSet));
+                                data.setValueTextSize(10f);
+                                data.setValueTextColor(Color.YELLOW);
+                                franChart.getLegend().setWordWrapEnabled(true);
+                                franChart.setData(data);
+                                System.out.println("3");
+                                franChart.invalidate();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                        }
+
+                    }
+                    );
+                    queue.add(jsonArrayRequest);
+                }
 
             }
 

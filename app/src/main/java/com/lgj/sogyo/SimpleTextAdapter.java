@@ -23,6 +23,8 @@ public class SimpleTextAdapter extends RecyclerView.Adapter<SimpleTextAdapter.Vi
         TextView openYear;
         TextView closeYear;
 
+
+
         ViewHolder(View itemView){
             super(itemView);
             BizName = itemView.findViewById(R.id.BizName);
@@ -31,6 +33,8 @@ public class SimpleTextAdapter extends RecyclerView.Adapter<SimpleTextAdapter.Vi
             IsOpen = itemView.findViewById(R.id.IsOpen);
             openYear = itemView.findViewById(R.id.openYear);
             closeYear = itemView.findViewById(R.id.closeYear);
+
+
         }
     }
 
@@ -38,7 +42,6 @@ public class SimpleTextAdapter extends RecyclerView.Adapter<SimpleTextAdapter.Vi
     SimpleTextAdapter (ArrayList<Store> list){
         mData=list;
     }
-
     @Override
     public SimpleTextAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType){
         Context context = parent.getContext();

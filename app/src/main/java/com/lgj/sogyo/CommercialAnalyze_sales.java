@@ -17,7 +17,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
-
+import org.json.JSONArray;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -41,6 +41,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+//import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,6 +51,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Random;
 import android.graphics.Color;
+import android.widget.Toast;
+
 public class CommercialAnalyze_sales extends AppCompatActivity {
 
     NavigationView navigationView;
@@ -61,6 +64,10 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
     LineChart chart;
     LineData chartData;
     RequestQueue queue;
+    String[] lb = new String[]{"커피전문점/카페/다방", "패스트푸드", "한식/백반/한정식", "국수/만두/칼국수", "후라이드/양념치킨", "곱창/양구이전문",
+            "라면김밥분식", "중국음식/중국집", "동남아음식", "제과점", "양식", "유흥주점", "피자전문", "죽전문점", "일식수산물", "족발/보쌈전문", "아이스크림판매",
+            "떡볶이전문", "갈비/삼겹살", "닭/오리요리"};
+    ArrayList<Integer>num;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -122,881 +129,117 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
 //        spinner.setAdapter(Adapter);
         final myMarkerView mv=new myMarkerView(this,R.layout.activity_my_marker_view);
         apply.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                System.out.println("1");
+            public void onClick(View v) {
+
                 SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
-                int count = Adapter.getCount() ;
-                chart = findViewById(R.id.chart);
-                chartData=new LineData();
-                for(int i = count-1;i>=0;i--){
-                    if(checkedItems.get(i)){
-                        if(i==0){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/cafe";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="커피전문점/카페/다방";
-
-                                        for(int i=0;i<response.length();i++){
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==1){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/fastfood";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="패스트푸드";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==2){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/korean";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="한식/백반/한정식";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==3){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/noodle";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="국수/만두/칼국수";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==4){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/chicken";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="후라이드/양념치킨";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==5){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/gobchang";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="곱창/양구이전문";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==6){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/ramen";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="라면김밥분식";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==7){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/china";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="중국음식/중국집";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==8){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/thai";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="동남아음식";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==9){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/bakery";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="제과점";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==10){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/dosirak";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="도시락전문";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==11){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/west";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="양식";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==12){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/drink";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="유흥주점";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==13){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/pizza";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="피자전문";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==14){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/waterrice";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="죽전문점";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==15){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/japan";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="japan";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==16){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/jokbal";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="족발/보쌈전문";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==17){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/icecream";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="아이스크림판매";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==18){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/ddeok";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="떡볶이전문";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==19){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/galbi";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="갈비/삼겹살";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                        if(i==20){
-                            String url = "http://10.0.2.2:3000/CommercialAnalyze/duck";
-                            final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                                    Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                                @Override
-                                public void onResponse(JSONArray response) {
-                                    try {
-//                                ArrayList<Entry> arr[] = new ArrayList[21];
-                                        ArrayList<Entry>arr=new ArrayList<>();
-                                        String Label="닭/오리요리";
-                                        for(int i=0;i<response.length();i++){
-
-                                            JSONObject jsonObject = response.getJSONObject(i);
-                                            int quarter = jsonObject.getInt("quarter");
-                                            int qt_sales = jsonObject.getInt("qt_sales");
-                                            arr.add(new Entry(Float.valueOf(quarter),Float.valueOf(qt_sales)));
-
-                                        }
-                                        LineDataSet set = new LineDataSet(arr,Label);
-                                        Random rand=new Random();
-                                        int c= Color.rgb(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-                                        set.setColor(c);
-                                        set.setCircleColors(c);
-                                        set.setLineWidth(2);
-                                        set.setValueTextSize(15);
-                                        chartData.addDataSet(set);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                }
-
-                            }
-                            );
-                            queue.add(jsonArrayRequest);
-                        }
-                    }
+                int count = Adapter.getCount();
+                int cnt1 = 0;
+                for (int i = 0; i < 21; i++) {
+                    if (checkedItems.get(i))
+                        cnt1++;
                 }
-
-                new Handler().postDelayed(new Runnable(){
-                    @Override
-                    public void run() {
-                        chartData.setDrawValues(false);
-                        chart.setMarkerView(mv);
-                        chart.setDrawMarkerViews(true);
-                        chart.setBackgroundColor(Color.WHITE);
-                        chart.setData(chartData);
-                        chart.setDrawBorders(true);
-                        chart.setBorderWidth(2);
-                        XAxis xAxis=chart.getXAxis();
-                        xAxis.setLabelCount(3);
-                        YAxis yLAxis=chart.getAxisLeft();
-                        yLAxis.setAxisMaximum(8000);
-                        yLAxis.setAxisMinimum(2000);
-                        yLAxis.setLabelCount(4);
-                        YAxis yRAxis=chart.getAxisRight() ;
-                        yRAxis.setAxisMaximum(8000);
-                        yRAxis.setAxisMinimum(2000);
-                        yRAxis.setLabelCount(4);
-                        Legend legend = chart.getLegend();
-                        legend.setEnabled(true);
-                        legend.setTextColor(Color.RED);
-                        chart.invalidate();
+                if (cnt1 > 4)
+                    Toast.makeText(CommercialAnalyze_sales.this, "4개까지만 선택하십시오", Toast.LENGTH_SHORT).show();
+                else {
+                    chart = findViewById(R.id.chart);
+                    chartData = new LineData();
+                    String SQL = "select lowerCategory, qt_sales, quarter from sales where";
+                    int cnt = 0;
+                    num = new ArrayList<>();
+                    for (int i = 0; i < count; i++) {
+                        if (checkedItems.get(i)) {
+                            if (cnt == 0) {
+                                String s = " lowerCategory='" + lb[i] + "'";
+                                SQL += s;
+                                cnt++;
+                            } else {
+                                String s = " or lowerCategory='" + lb[i] + "'";
+                                SQL += s;
+                            }
+                            num.add(i);
+                        }
                     }
-                },1200);
+                    SQL += ";";
+                    JSONObject requestJsonObject = new JSONObject(); //2
+                    try {
+                        //System.out.println("서버 넣기 전");
+                        requestJsonObject.put("Q", SQL);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JSONArray j = new JSONArray();
+                    j.put(requestJsonObject);
+                    String url = "http://10.0.2.2:3000/CommercialAnalyze/total";
+
+                    final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                            Request.Method.POST, url, j, new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try {
+                                System.out.println(response.length());
+                                for (int i = 0; i < response.length(); i += 4) {
+                                    ArrayList<Entry> arr = new ArrayList<>();
+                                    String Label = "";
+                                    for (int t = 0; t < 4; t++) {
+                                        JSONObject jsonObject = response.getJSONObject(i + t);
+                                        if (t % 4 == 0) {
+                                            Label = jsonObject.getString("lowerCategory");
+                                        }
+                                        int quarter = jsonObject.getInt("quarter");
+                                        int qt_sales = jsonObject.getInt("qt_sales");
+                                        arr.add(new Entry(Float.valueOf(quarter), Float.valueOf(qt_sales)));
+                                    }
+                                    LineDataSet set = new LineDataSet(arr, Label);
+                                    Random rand = new Random();
+                                    int c = Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+                                    set.setColor(c);
+                                    set.setCircleColors(c);
+                                    set.setLineWidth(2);
+                                    set.setValueTextSize(15);
+                                    chartData.addDataSet(set);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                        }
+
+                    }
+                    );
+                    queue.add(jsonArrayRequest);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            chartData.setDrawValues(false);
+                            chart.setMarkerView(mv);
+                            chart.setDrawMarkerViews(true);
+                            chart.setBackgroundColor(Color.WHITE);
+                            chart.setData(chartData);
+                            chart.setDrawBorders(true);
+                            chart.setBorderWidth(2);
+                            XAxis xAxis = chart.getXAxis();
+                            xAxis.setLabelCount(3);
+                            YAxis yLAxis = chart.getAxisLeft();
+                            yLAxis.setAxisMaximum(8000);
+                            yLAxis.setAxisMinimum(2000);
+                            yLAxis.setLabelCount(4);
+                            YAxis yRAxis = chart.getAxisRight();
+                            yRAxis.setAxisMaximum(8000);
+                            yRAxis.setAxisMinimum(2000);
+                            yRAxis.setLabelCount(4);
+                            Legend legend = chart.getLegend();
+                            legend.setEnabled(true);
+                            legend.setTextColor(Color.RED);
+                            chart.invalidate();
+                        }
+                    }, 500);
+                }
             }
         });
 

@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -85,7 +86,7 @@ public class CommercialAnalyze_main extends AppCompatActivity implements OnMapRe
         setSupportActionBar(toolbar);
         navigationView = findViewById(R.id.nav);
         navigationView.setItemIconTintList(null);// 사이드 메뉴에 아이콘 색깔을 원래 아이콘 색으로
-
+        Toast.makeText(CommercialAnalyze_main.this, "인하대 상권", Toast.LENGTH_SHORT).show();
         drawerLayout = findViewById(R.id.layout_drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(drawerToggle);//누를때마다 아이콘이 팽그르 돈다.
