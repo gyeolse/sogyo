@@ -29,7 +29,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class judgementActivity extends AppCompatActivity {
 
     NavigationView navigationView;
@@ -43,7 +42,6 @@ public class judgementActivity extends AppCompatActivity {
     RequestQueue queue;
     String selectedspinner;
     String url = "http://10.0.2.2:3000/judgement";
-    Bundle bundle = new Bundle(); //fragment 전송시켜줄 객체 선언
     Double judge_score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +50,7 @@ public class judgementActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("Sogyo");
 //volley
-//        queue= Volley.newRequestQueue(this);
-        //spinner.setPrompt("Select Category");
+
         setSupportActionBar(toolbar);
         navigationView=findViewById(R.id.nav);
         navigationView.setItemIconTintList(null);// 사이드 메뉴에 아이콘 색깔을 원래 아이콘 색으로
@@ -87,15 +84,13 @@ public class judgementActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         // 선택된 카테고리, 프렌차이즈체크여부, 가격정보를 서버로 전송해야한다.
         textView=(TextView)findViewById(R.id.tv_view);
         spinner=(Spinner)findViewById(R.id.spinner);
         checkBox=(CheckBox)findViewById(R.id.checked);
         editText=(EditText)findViewById(R.id.cost);
         btn=(Button)findViewById(R.id.jud_btn);
-        //ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.Category,android.R.layout.simple_spinner_dropdown_item);
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinner.setAdeapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
@@ -112,7 +107,6 @@ public class judgementActivity extends AppCompatActivity {
 //Volley Network
                 JSONObject requestJsonObject = new JSONObject(); //2
                 try {
-                    //System.out.println("서버 넣기 전");
                     requestJsonObject.put("category", selectedspinner);
                     if(checkBox.isChecked()){
                         requestJsonObject.put("cost",editText.getText().toString() );
@@ -140,19 +134,11 @@ public class judgementActivity extends AppCompatActivity {
 
                 requestqueue.add(jsonObjectRequest);
 
-//               Intent intent= new Intent(getApplicationContext(),Judgement_Result.class);
-//                startActivity(intent);
-
-//Fragement 띄우기 구현
-
+                //다음 액티비티로 이동
                 Handler mHandler = new Handler();
                 Runnable mMyTask = new Runnable() {
                     @Override
                     public void run() {
-                        // 실제 동작
-                        //                    bundle.putString("category",selectedspinner); //프래그먼트에 보낼 데이터
-                        //                    bundle.putString("cost",editText.getText().toString()); //프래그먼트에 보낼 데이터
-                        //                    bundle.putBoolean("checkBox",checkBox.isChecked());
                         Intent myIntent = new Intent(judgementActivity.this, judgeResult.class);
                         boolean a = checkBox.isChecked();
                         String b = editText.getText().toString();
@@ -162,16 +148,6 @@ public class judgementActivity extends AppCompatActivity {
                         myIntent.putExtra("category",c);
                         myIntent.putExtra("judge_score",judge_score);
                         startActivity(myIntent);
-
-//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                        JudgeFragment judgeFragment = new JudgeFragment();
-//                        judgeFragment.setArguments(bundle); //보낼 데이터 지정
-
-                        //로딩화면 표시
-//                        transaction.replace(R.id.frame,judgeFragment);
-//                        transaction.addToBackStack(null);
-//                        transaction.commit();
-//                        btn.setVisibility(View.INVISIBLE);
                     }
                 };
                 mHandler.postDelayed(mMyTask, 1500); // 1.5초후에 실행
@@ -179,8 +155,5 @@ public class judgementActivity extends AppCompatActivity {
             }
         });
 
-
-//        queue.add();
     }
-//
 }
