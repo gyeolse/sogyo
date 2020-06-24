@@ -12,7 +12,7 @@ app.listen(3000,'localhost',function(){
 });
 
 var connection = mysql.createConnection({
-        host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
+        host: 'lgjfinal.csygxgspjzz1.us-east-2.rds.amazonaws.com',
         user:'root',
         database: 'biz',
         password: 'dlarkdwjd',
