@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
         host: 'mydbinstance.csygxgspjzz1.us-east-2.rds.amazonaws.com',
         user:'root',
         database: 'biz',
-        password: '12341234',
+        password: 'dlarkdwjd',
         port:3306
 });
 
