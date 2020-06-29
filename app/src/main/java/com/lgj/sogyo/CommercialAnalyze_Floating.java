@@ -276,13 +276,13 @@ public class CommercialAnalyze_Floating extends AppCompatActivity {
 
                                 for(int i=0;i<response.length();i++){
                                     arr[i]=new ArrayList<>();
-                                    JSONObject jsonObject = response.getJSONObject(i);
+                                    JSONObject jsonObject = response.getJSONObject(1-i);
                                     int population = jsonObject.getInt("pop");
 
                                     arr[i].add(new BarEntry(Float.valueOf(i),Float.valueOf(population)));
                                 }
-                                BarDataSet woman=new BarDataSet(arr[0],"woman");
-                                BarDataSet man=new BarDataSet(arr[1],"man");
+                                BarDataSet woman=new BarDataSet(arr[1],"woman");
+                                BarDataSet man=new BarDataSet(arr[0],"man");
                                 BarData chartData=new BarData();
 //                                BarData chartData=new BarData(woman);
 
@@ -293,9 +293,9 @@ public class CommercialAnalyze_Floating extends AppCompatActivity {
                                 woman.setValueTextSize(10);
                                 man.setValueTextSize(10);
 
-
-                                chartData.addDataSet(woman);
                                 chartData.addDataSet(man);
+                                chartData.addDataSet(woman);
+
                                 chartData.setHighlightEnabled(true);
 //                                chartData.setDrawValues(false);
 //                                chartData.setBarWidth(1f);

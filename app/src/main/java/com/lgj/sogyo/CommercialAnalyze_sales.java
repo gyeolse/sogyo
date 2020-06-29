@@ -138,7 +138,9 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
                     if (checkedItems.get(i))
                         cnt1++;
                 }
-                if (cnt1 > 4)
+                if(cnt1==0)
+                    Toast.makeText(CommercialAnalyze_sales.this, "1개 이상 선택하십시오", Toast.LENGTH_SHORT).show();
+                else if (cnt1 > 4)
                     Toast.makeText(CommercialAnalyze_sales.this, "4개까지만 선택하십시오", Toast.LENGTH_SHORT).show();
                 else {
                     chart = findViewById(R.id.chart);
@@ -170,9 +172,9 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
                     }
                     JSONArray j = new JSONArray();
                     j.put(requestJsonObject);
-                    System.out.println("1");
+
                     String url = "http://ec2-18-188-97-32.us-east-2.compute.amazonaws.com:3000/CommercialAnalyze/total";
-                    System.out.println(url);
+
                     final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                             Request.Method.POST, url, j, new Response.Listener<JSONArray>() {
                         @Override
@@ -239,7 +241,7 @@ public class CommercialAnalyze_sales extends AppCompatActivity {
                             legend.setTextColor(Color.RED);
                             chart.invalidate();
                         }
-                    }, 500);
+                    }, 800);
                 }
             }
         });
