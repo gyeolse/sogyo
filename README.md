@@ -4,4 +4,4 @@
 - Android: gyeolse & kangukKim
 - server: 3unha
 
-judgement.js가 실서버입니다.
+judgement.js가 사용된 서버입니다.
